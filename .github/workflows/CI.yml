@@ -30,6 +30,4 @@ jobs:
           distribution: 'corretto'
       - name: Tes validation
         run: mvn test
-      # Maven handles checking if the tests pass
-      - name: Test validation 
-        run: mvn test
+
