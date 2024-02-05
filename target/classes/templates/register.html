@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Simple HTML Page</title>
+</head>
+<body>
+<h1>Amusement Park</h1>
+<form method="POST" action="/api/register">
+  <input type="text" name="name" placeholder="first name" />
+  <input type="text" name="surname" placeholder="surname" />
+  <input type="text" name="pnr" placeholder="Social Security number" />
+  <input type="text" name="email" placeholder="email" />
+  <input type="password" name="password" placeholder="Password" />
+  <input type="text" name="username" placeholder="username" />
+  <input type="submit" value="Sign in" />
+</form>
+<br>
+<p style="color: red" th:text="${errorMessage}"></p>
+</body>
+</html>
