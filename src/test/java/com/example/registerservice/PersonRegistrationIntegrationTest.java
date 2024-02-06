@@ -12,34 +12,32 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-
-
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * RegisterControllerIntegrationTest uses TestContainers and demonstrates integration testing.
  * The tests included are:
  * 1. Checking if a user is registering with a username, social security number or email that
- * already exists in the database.
+ *              already exists in the database.
  * 2. Checking if the user submitted a registration where one of the required fields are missing.
- * 3. Checking if the user submitted a correct email format.
+ * 3.           Checking if the user submitted a correct email format.
  * {@code @Transactional} ensures application is saved to the database only if
- *                      the transaction is successful.
+ *              the transaction is successful.
  */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @Testcontainers
 @Transactional
-public class RegisterControllerIntegrationTest {
+public class PersonRegistrationIntegrationTest {
 
     /**
      * Mocking a PostgreSQL database for the integration tests.
      * The database is configured with a specific, name, username and
-     * password as well as the latest postgreSQL version.
+     *          password as well as the latest postgreSQL version.
      * {@code @Container} sets the field as a TestContainer container.
      */
     @Container
     private static final PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:latest")
-            .withDatabaseName("postgrestest")
+            .withDatabaseName("postgresg2")
             .withUsername("postgres")
             .withPassword("Qwerty123456!");
 
@@ -53,9 +51,8 @@ public class RegisterControllerIntegrationTest {
     /**
      * The method sets the property JDBC URL spring.datasource.url
      * dynamically for the postgreSQL container.
-     *
      * @param dynamicPropertyRegistry adding dynamic properties.
-     *                                {@code @DynamicPropertySource} allows adding properties with dynamic values for test
+     * {@code @DynamicPropertySource} allows adding properties with dynamic values for test
      */
     @DynamicPropertySource
     public static void testProps(DynamicPropertyRegistry dynamicPropertyRegistry) {
@@ -73,9 +70,9 @@ public class RegisterControllerIntegrationTest {
 
     /**
      * JUnit test to simulate a situation where a user is registering with data that
-     * already exists in the database.
+     *          already exists in the database.
      * The test checks to see whether duplicate data is detected to make sure the same user
-     * is not registered more than once.
+     *          is not registered more than once.
      */
     @Test
     void isApplicantAlreadyInDatabase() throws Exception {
@@ -93,22 +90,27 @@ public class RegisterControllerIntegrationTest {
 
         /**
      * JUnit test that checks if an empty field is detected so that a registered
-     * user is not saved if any of the required fields are missing.
+     *          user is not saved if any of the required fields are missing.
      */
     @Test
     void isAFieldMissingInRegistrationForm() {
-        PersonDTO person = new PersonDTO(1L, "test", "", "00091738559", "test@test.com", "123", "test");
-        assertNotNull(personService.checkEmptyRegistrationFields(person));
+        PersonDTO personMissingUsername = new PersonDTO(1L, "test", "test", "00091738559", "test@test.com", "123", "");
+        assertNotNull(personService.checkEmptyRegistrationFields(personMissingUsername));
+        PersonDTO personMissingEmail = new PersonDTO(1L, "test", "", "00091738559", "", "123", "test");
+        assertNotNull(personService.checkEmptyRegistrationFields(personMissingEmail));
+        PersonDTO personMissingPnr = new PersonDTO(1L, "test", "", "", "test@test.com", "123", "test");
+        assertNotNull(personService.checkEmptyRegistrationFields(personMissingPnr));
+
 
     }
 
     /**
      * JUnit test that tests 7 different data transfer objects from user registration
-     * that contains different combinations of email formats.
+     *          that contains different combinations of email formats.
      * For instance if the user misses any of the combinations of local-part@domain-part,
-     * an error message should be thrown.
+     *          an error message should be thrown.
      * Finally, the last data transfer object example contains a correct email format and
-     * checks to see that the correctEMailFormatMessage is returned when.
+     *          checks to see that the correctEMailFormatMessage is returned when.
      */
     @Test
     void doesTheSubmittedEmailHaveCorrectFormat() throws Exception {
