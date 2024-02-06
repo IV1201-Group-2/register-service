@@ -19,10 +19,15 @@ import com.example.registerservice.model.dto.ErrorDTO;
 @Controller
 public class RegisterController {
 
+    /**
+     * An instance of PersonService handling business
+     *                      logic specific to person related operations.
+     */
     private final PersonService personService;
 
     /**
      * The constructor for RegisterController
+     *
      * @param personService is the service responsible for the business logic
      *                      specific to person related operations.
      */

@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * 3. Checking if the user attempting to submit an email that has an incorrect format
  *                  returns the correct HTTP Status response.
  * {@code @Transactional} ensures application is saved to the database only if
- *                      the transaction is successful.
+ *                  the transaction is successful.
  */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @Testcontainers
@@ -90,22 +90,22 @@ public class RegistrationControllerIntegrationTest {
     @Test
     void isApplicantAlreadyInDatabase() throws Exception {
         //New user registered with unique data fields submitted
-        PersonDTO firstRegistration = new PersonDTO(1L, "testName", "testSurname", "123456", "test@test.com", "123", "testUsername");
+        PersonDTO firstRegistration = new PersonDTO(1L, "Clara", "Eklund", "202203323434", "claraeklund@kth.com", "123", "claraek");
         ResponseEntity<Object> firstUserRegistration = registerController.registration(firstRegistration, null);
         assertEquals(HttpStatus.OK, firstUserRegistration.getStatusCode());
 
         //User attempting to register with a username that is taken
-        PersonDTO secondRegistration = new PersonDTO(1L, "testName", "testSurname", "1234567", "changeEmail@email.com", "123", "testUsername");
+        PersonDTO secondRegistration = new PersonDTO(1L, "Anders", "Dean", "202012123454", "andersbo@kth.com", "123", "claraek");
         ResponseEntity<Object> secondUserRegistration = registerController.registration(secondRegistration, null);
         assertEquals(HttpStatus.BAD_REQUEST, secondUserRegistration.getStatusCode());
 
         //User attempting to register with a Social security number that is taken
-        PersonDTO thirdRegistration = new PersonDTO(1L, "testName", "testSurname", "123456", "changeEmailAgain@email.com", "123", "changeUsername");
+        PersonDTO thirdRegistration = new PersonDTO(1L, "Karin", "Elbert", "202203323434", "karinelb@kth.com", "123", "karin20");
         ResponseEntity<Object> thirdUserRegistration = registerController.registration(thirdRegistration, null);
         assertEquals(HttpStatus.BAD_REQUEST, thirdUserRegistration.getStatusCode());
 
         //User attempting to register with an email that is taken
-        PersonDTO fourthRegistration = new PersonDTO(1L, "testName", "testSurname", "12345678", "test@test.com", "123", "changeUsernameAgain");
+        PersonDTO fourthRegistration = new PersonDTO(1L, "Fatima", "Akbari", "200011118989", "claraeklund@kth.com", "123", "fatimakbari");
         ResponseEntity<Object> fourthUserRegistration = registerController.registration(fourthRegistration, null);
         assertEquals(HttpStatus.BAD_REQUEST, fourthUserRegistration.getStatusCode());
     }
@@ -143,7 +143,7 @@ public class RegistrationControllerIntegrationTest {
         assertEquals(HttpStatus.BAD_REQUEST, fifthUserRegistration.getStatusCode());
 
         //User attempting to submit a registration where the username is missing
-        PersonDTO personMissingUsername = new PersonDTO(1L, "Dannie", "Kvist", "", "dankvist@kth.com", "123", "dankvistt");
+        PersonDTO personMissingUsername = new PersonDTO(1L, "Dannie", "Kvist", "200403030909", "dankvist@kth.com", "123", "");
         ResponseEntity<Object> sixthUserRegistration = registerController.registration(personMissingUsername, null);
         assertEquals(HttpStatus.BAD_REQUEST, sixthUserRegistration.getStatusCode());
 
@@ -194,7 +194,6 @@ public class RegistrationControllerIntegrationTest {
         //User registering with a correct email format
         ResponseEntity<Object> seventhUserRegistration = registerController.registration(correctEmailFormat, null);
         assertEquals(HttpStatus.OK, seventhUserRegistration.getStatusCode());
-
 
     }
 }
