@@ -12,6 +12,8 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
+
+
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -21,7 +23,8 @@ import static org.junit.jupiter.api.Assertions.*;
  * already exists in the database.
  * 2. Checking if the user submitted a registration where one of the required fields are missing.
  * 3. Checking if the user submitted a correct email format.
- * {@code @Transactional} ensures application is saved to the database only if the transaction is successful.
+ * {@code @Transactional} ensures application is saved to the database only if
+ *                      the transaction is successful.
  */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @Testcontainers
@@ -30,8 +33,8 @@ public class RegisterControllerIntegrationTest {
 
     /**
      * Mocking a PostgreSQL database for the integration tests.
-     * The database is configured with a specific, name, username and password as well as
-     * the latest postgreSQL version.
+     * The database is configured with a specific, name, username and
+     * password as well as the latest postgreSQL version.
      * {@code @Container} sets the field as a TestContainer container.
      */
     @Container
@@ -48,9 +51,11 @@ public class RegisterControllerIntegrationTest {
     private PersonService personService;
 
     /**
-     * The method sets the property JDBC URL spring.datasource.url dynamically for the postgreSQL container.
+     * The method sets the property JDBC URL spring.datasource.url
+     * dynamically for the postgreSQL container.
+     *
      * @param dynamicPropertyRegistry adding dynamic properties.
-     * {@code @DynamicPropertySource} allows adding properties with dynamic values for test
+     *                                {@code @DynamicPropertySource} allows adding properties with dynamic values for test
      */
     @DynamicPropertySource
     public static void testProps(DynamicPropertyRegistry dynamicPropertyRegistry) {
@@ -73,7 +78,7 @@ public class RegisterControllerIntegrationTest {
      * is not registered more than once.
      */
     @Test
-    void isApplicantAlreadyInDatabase() {
+    void isApplicantAlreadyInDatabase() throws Exception {
         PersonDTO firstRegistration = new PersonDTO(1L, "test", "test", "00091738559", "test@test.com", "123", "test");
         personService.saveApplicant(firstRegistration);
         PersonDTO secondRegistration = new PersonDTO(2L, "test", "test", "00091738559", "test@test.com", "123", "test");
@@ -86,14 +91,15 @@ public class RegisterControllerIntegrationTest {
 
     }
 
-    /**
+        /**
      * JUnit test that checks if an empty field is detected so that a registered
      * user is not saved if any of the required fields are missing.
      */
     @Test
     void isAFieldMissingInRegistrationForm() {
         PersonDTO person = new PersonDTO(1L, "test", "", "00091738559", "test@test.com", "123", "test");
-        assertNotNull(personService.checEmptyRegistrationFields(person));
+        assertNotNull(personService.checkEmptyRegistrationFields(person));
+
     }
 
     /**
@@ -105,7 +111,7 @@ public class RegisterControllerIntegrationTest {
      * checks to see that the correctEMailFormatMessage is returned when.
      */
     @Test
-    void doesTheSubmittedEmailHaveCorrectFormat() {
+    void doesTheSubmittedEmailHaveCorrectFormat() throws Exception {
         PersonDTO emailMissingLocalPart = new PersonDTO(1L, "test", "", "00091738559", "@test.com", "123", "test");
         PersonDTO emailMissingAtSign = new PersonDTO(1L, "test", "", "00091738559", "testtest.com", "123", "test");
         PersonDTO emailMissingDomainPart = new PersonDTO(1L, "test", "", "00091738559", "test@", "123", "test");
@@ -120,7 +126,6 @@ public class RegisterControllerIntegrationTest {
         assertNotEquals("", personService.checkEmailFormat(emailMissingLocalAndAtSign));
         assertNotEquals("", personService.checkEmailFormat(emailMissingLocalPartAndDomainPart));
         assertNotEquals("", personService.checkEmailFormat(emailMissingAtSignAndDomainPart));
-        assertEquals("Email has the correct format", personService.checkEmailFormat(correctEmailFormat));
+        assertEquals("CORRECT_EMAIL", personService.checkEmailFormat(correctEmailFormat));
     }
-
 }

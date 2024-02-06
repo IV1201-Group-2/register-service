@@ -1,13 +1,20 @@
 package com.example.registerservice.controller;
 
+
 import com.example.registerservice.model.dto.PersonDTO;
 import com.example.registerservice.service.PersonService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import com.example.registerservice.model.dto.ErrorDTO;
+
 
 /**
- * Registration controller renders different endpoints based on user-input during registration.
+ * Registration controller handles HTTP requests and
+ * presents different JSON objects with HTTP statuses based on
+ *                          user-input during registration.
  */
 @Controller
 public class RegisterController {
@@ -33,44 +40,36 @@ public class RegisterController {
     }
 
     /**
-     * Method containing validation method calls and rendering of different endpoints depending on user input.
+     * Method containing validation method calls and returns different
+     *                      JSON objects with corresponding HTTP
+     *                      statuses depending on user input.
      * @param personDTO Data transfer object representing users submitted information.
      * @param model Model used to pass data to the view based on MVC layer.
-     * @return Renders the name of the HTMl page for the user.
+     * {@code @ResponseBody}
+     * @return HTTP status and no header.
      */
     @PostMapping("/api/register")
-    public String registration(@ModelAttribute PersonDTO personDTO, Model model) {
+    @ResponseBody
+    public ResponseEntity<Object> registration(@ModelAttribute PersonDTO personDTO, Model model) {
         // Error messages based on users input.
-        String emptyFieldErrorMessage = personService.checEmptyRegistrationFields(personDTO);
+        String emptyFieldErrorMessage = personService.checkEmptyRegistrationFields(personDTO);
         String duplicateFieldErrorMessage = personService.checkRegistrationDuplicate(personDTO);
         String emailFormatErrorMessage = personService.checkEmailFormat(personDTO);
+      
         // Validation process based on if user submitted information with missing field/s
         // Or if user is already registered and is submitting data present in the database
         // Or if the email format is wrong, for example missing any of the 3: (local-part)(@)(domain-part).
+
         if (emptyFieldErrorMessage != null) {
-            model.addAttribute("errorMessage", emptyFieldErrorMessage);
-            return "register";
+            return new ResponseEntity<>(new ErrorDTO(emptyFieldErrorMessage), HttpStatus.BAD_REQUEST);
         } else if (duplicateFieldErrorMessage != null) {
-            model.addAttribute("errorMessage", duplicateFieldErrorMessage);
-            return "register";
-        } else if (!("Email has the correct format".equals(emailFormatErrorMessage))) {
-            model.addAttribute("errorMessage", emailFormatErrorMessage);
-            return "register";
+            return new ResponseEntity<>(new ErrorDTO(duplicateFieldErrorMessage), HttpStatus.BAD_REQUEST);
+        } else if (!("CORRECT_EMAIL".equals(emailFormatErrorMessage))) {
+            return new ResponseEntity<>(new ErrorDTO(emailFormatErrorMessage), HttpStatus.BAD_REQUEST);
         }
         // User is saved to the database if the validation process is passed with no errors.
         personService.saveApplicant(personDTO);
-        model.addAttribute("message", "Successfully registered!");
-        return "redirect:/api/registeredSuccessfully";
+        return new ResponseEntity<>(null, HttpStatus.OK);
 
     }
-
-    /**
-     * Renders the registeredSuccessfully page if user registration was completed correctly.
-     * @return Renders the name of the HTMl page for the user.
-     */
-    @GetMapping("/api/registeredSuccessfully")
-    public String registeredSuccessfully() {
-        return "registeredSuccessfully";
-    }
-
 }
