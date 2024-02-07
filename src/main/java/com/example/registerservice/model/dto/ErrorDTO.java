@@ -1,6 +1,7 @@
 package com.example.registerservice.model.dto;
 
 import lombok.Data;
+import lombok.Getter;
 
 /**
  * Error data transfer object class presents specific errors based on:
@@ -8,7 +9,7 @@ import lombok.Data;
  * 2. If any of the fields were missing when registration was submitted.
  * 3. If the email format was wrong or missed any of the (local-part(@)(domain-part)).
  */
-@Data
+@Getter
 public class ErrorDTO {
     private String error;
     private String details;

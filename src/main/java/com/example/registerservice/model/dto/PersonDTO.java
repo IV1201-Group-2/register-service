@@ -1,6 +1,7 @@
 package com.example.registerservice.model.dto;
 
 import lombok.Data;
+import lombok.Getter;
 
 
 /**
@@ -8,7 +9,7 @@ import lombok.Data;
  * required by the registration form.
  * {@code @Data} is used to automatically generate getters and setters.
  */
-@Data
+@Getter
 public class PersonDTO {
 
     /**
