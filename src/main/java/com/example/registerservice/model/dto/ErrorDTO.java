@@ -1,6 +1,5 @@
 package com.example.registerservice.model.dto;
 
-import lombok.Data;
 import lombok.Getter;
 
 /**
@@ -11,8 +10,12 @@ import lombok.Getter;
  */
 @Getter
 public class ErrorDTO {
-    private String error;
-    private String details;
+
+    /**
+     * Error is responsible for providing specific
+     *              error messages during user registration.
+     */
+    private final String error;
 
     /**
      * Constructor for the Error data transfer object.

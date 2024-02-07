@@ -1,6 +1,5 @@
 package com.example.registerservice.model.dto;
 
-import lombok.Data;
 import lombok.Getter;
 
 
@@ -15,37 +14,37 @@ public class PersonDTO {
     /**
      * person_id is the primary key in the database.
      */
-    private Long person_id;
+    private final Long person_id;
 
     /**
      * The first name of the registering user.
      */
-    private String name;
+    private final String name;
 
     /**
      * The surname of the registering user.
      */
-    private String surname;
+    private final String surname;
 
     /**
      * The social security number of the registering user.
      */
-    private String pnr;
+    private final String pnr;
 
     /**
      * The email of the registering user.
      */
-    private String email;
+    private final String email;
 
     /**
      * The password of the registering user.
      */
-    private String password;
+    private final String password;
 
     /**
      * The username of the registering user.
      */
-    private String username;
+    private final String username;
 
     /**
      * Constructor for PersonDTO
