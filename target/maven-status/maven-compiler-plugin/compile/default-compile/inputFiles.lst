@@ -1,7 +1,8 @@
-/Users/yas/Desktop/Application/KTH/Year3/P3/IV1201 Architecture & Design of Global Applications/register-service/src/main/java/com/example/registerservice/repository/PersonRepository.java
-/Users/yas/Desktop/Application/KTH/Year3/P3/IV1201 Architecture & Design of Global Applications/register-service/src/main/java/com/example/registerservice/model/dto/PersonDTO.java
-/Users/yas/Desktop/Application/KTH/Year3/P3/IV1201 Architecture & Design of Global Applications/register-service/src/main/java/com/example/registerservice/security/SecurityConfig.java
-/Users/yas/Desktop/Application/KTH/Year3/P3/IV1201 Architecture & Design of Global Applications/register-service/src/main/java/com/example/registerservice/RegisterServiceApplication.java
-/Users/yas/Desktop/Application/KTH/Year3/P3/IV1201 Architecture & Design of Global Applications/register-service/src/main/java/com/example/registerservice/service/PersonService.java
-/Users/yas/Desktop/Application/KTH/Year3/P3/IV1201 Architecture & Design of Global Applications/register-service/src/main/java/com/example/registerservice/controller/RegisterController.java
-/Users/yas/Desktop/Application/KTH/Year3/P3/IV1201 Architecture & Design of Global Applications/register-service/src/main/java/com/example/registerservice/model/Person.java
+/Users/yas/Desktop/register-service/src/main/java/com/example/registerservice/RegisterServiceApplication.java
+/Users/yas/Desktop/register-service/src/main/java/com/example/registerservice/repository/PersonRepository.java
+/Users/yas/Desktop/register-service/src/main/java/com/example/registerservice/model/Person.java
+/Users/yas/Desktop/register-service/src/main/java/com/example/registerservice/controller/RegisterController.java
+/Users/yas/Desktop/register-service/src/main/java/com/example/registerservice/service/PersonService.java
+/Users/yas/Desktop/register-service/src/main/java/com/example/registerservice/model/dto/PersonDTO.java
+/Users/yas/Desktop/register-service/src/main/java/com/example/registerservice/security/SecurityConfig.java
+/Users/yas/Desktop/register-service/src/main/java/com/example/registerservice/model/dto/ErrorDTO.java
