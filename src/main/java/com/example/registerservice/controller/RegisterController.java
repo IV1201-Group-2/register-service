@@ -53,9 +53,9 @@ public class RegisterController {
      * {@code @ResponseBody}
      * @return HTTP status and no header.
      */
-    @PostMapping("/api/register")
+    @PostMapping(value = "/api/register", produces = "application/json")
     @ResponseBody
-    public ResponseEntity<Object> registration(@ModelAttribute PersonDTO personDTO, Model model) {
+    public ResponseEntity<Object> registration(@RequestBody PersonDTO personDTO, Model model) {
         // Error messages based on users input.
         String emptyFieldErrorMessage = personService.checkEmptyRegistrationFields(personDTO);
         String duplicateFieldErrorMessage = personService.checkRegistrationDuplicate(personDTO);
