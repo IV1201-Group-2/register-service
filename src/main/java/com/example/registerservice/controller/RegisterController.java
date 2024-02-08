@@ -6,7 +6,6 @@ import com.example.registerservice.service.PersonService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import com.example.registerservice.model.dto.ErrorDTO;
 
@@ -49,31 +48,34 @@ public class RegisterController {
      *                      JSON objects with corresponding HTTP
      *                      statuses depending on user input.
      * @param personDTO Data transfer object representing users submitted information.
-     * @param model Model used to pass data to the view based on MVC layer.
      * {@code @ResponseBody}
      * @return HTTP status and no header.
      */
     @PostMapping(value = "/api/register", produces = "application/json")
     @ResponseBody
-    public ResponseEntity<Object> registration(@RequestBody PersonDTO personDTO, Model model) {
-        // Error messages based on users input.
-        String emptyFieldErrorMessage = personService.checkEmptyRegistrationFields(personDTO);
-        String duplicateFieldErrorMessage = personService.checkRegistrationDuplicate(personDTO);
-        String emailFormatErrorMessage = personService.checkEmailFormat(personDTO);
-      
-        // Validation process based on if user submitted information with missing field/s
-        // Or if user is already registered and is submitting data present in the database
-        // Or if the email format is wrong, for example missing any of the 3: (local-part)(@)(domain-part).
-        if (emptyFieldErrorMessage != null) {
-            return new ResponseEntity<>(new ErrorDTO(emptyFieldErrorMessage), HttpStatus.BAD_REQUEST);
-        } else if (duplicateFieldErrorMessage != null) {
-            return new ResponseEntity<>(new ErrorDTO(duplicateFieldErrorMessage), HttpStatus.BAD_REQUEST);
-        } else if (!("CORRECT_EMAIL".equals(emailFormatErrorMessage))) {
-            return new ResponseEntity<>(new ErrorDTO(emailFormatErrorMessage), HttpStatus.BAD_REQUEST);
-        }
-        // User is saved to the database if the validation process is passed with no errors.
-        personService.saveApplicant(personDTO);
-        return new ResponseEntity<>(null, HttpStatus.OK);
+    public ResponseEntity<Object> registration(@RequestBody PersonDTO personDTO) {
 
+        try {
+            // Error messages based on users input.
+            String emptyFieldErrorMessage = personService.checkEmptyRegistrationFields(personDTO);
+            String duplicateFieldErrorMessage = personService.checkRegistrationDuplicate(personDTO);
+            String emailFormatErrorMessage = personService.checkEmailFormat(personDTO);
+
+            // Validation process based on if user submitted information with missing field/s
+            // Or if user is already registered and is submitting data present in the database
+            // Or if the email format is wrong, for example missing any of the 3: (local-part)(@)(domain-part).
+            if (emptyFieldErrorMessage != null) {
+                return new ResponseEntity<>(new ErrorDTO(emptyFieldErrorMessage), HttpStatus.BAD_REQUEST);
+            } else if (duplicateFieldErrorMessage != null) {
+                return new ResponseEntity<>(new ErrorDTO(duplicateFieldErrorMessage), HttpStatus.BAD_REQUEST);
+            } else if (!("CORRECT_EMAIL".equals(emailFormatErrorMessage))) {
+                return new ResponseEntity<>(new ErrorDTO(emailFormatErrorMessage), HttpStatus.BAD_REQUEST);
+            }
+            // User is saved to the database if the validation process is passed with no errors.
+            personService.saveApplicant(personDTO);
+            return new ResponseEntity<>(null, HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(new ErrorDTO("INVALID_OPERATION"), HttpStatus.BAD_REQUEST);
+        }
     }
 }

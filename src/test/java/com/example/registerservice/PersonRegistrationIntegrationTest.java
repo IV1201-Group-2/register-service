@@ -71,13 +71,13 @@ public class PersonRegistrationIntegrationTest {
     }
 
     /**
-     * JUnit test to simulate a situation where a user is registering with data that
+     * JUnit test to simulate a situation where a user is registering with a username that
      *          already exists in the database.
      * The test checks to see whether duplicate data is detected to make sure the same user
      *          is not registered more than once.
      */
     @Test
-    void isApplicantAlreadyInDatabase() throws Exception {
+    void isUsernameAlreadyInDatabase() throws Exception {
         //New user registered with unique data fields submitted
         PersonDTO firstRegistration = new PersonDTO(1L, "Clara", "Eklund", "202203323434", "claraeklund@kth.com", "123", "claraek");
         personService.saveApplicant(firstRegistration);
@@ -87,10 +87,19 @@ public class PersonRegistrationIntegrationTest {
         String errorUsernameTaken = personService.checkRegistrationDuplicate(secondRegistration);
         assertNotNull(errorUsernameTaken);
 
-        //User attempting to register with a Social security number that is taken
-        PersonDTO thirdRegistration = new PersonDTO(1L, "Karin", "Elbert", "202203323434", "karinelb@kth.com", "123", "karin20");
-        String errorPnrTaken = personService.checkRegistrationDuplicate(thirdRegistration);
-        assertNotNull(errorPnrTaken);
+    }
+
+    /**
+     * JUnit test to simulate a situation where a user is registering with an email that
+     *          already exists in the database.
+     * The test checks to see whether duplicate data is detected to make sure the same user
+     *          is not registered more than once.
+     */
+    @Test
+    void isEmailAlreadyInDatabase() throws Exception {
+        //New user registered with unique data fields submitted
+        PersonDTO firstRegistration = new PersonDTO(1L, "Clara", "Eklund", "202203323434", "claraeklund@kth.com", "123", "claraek");
+        personService.saveApplicant(firstRegistration);
 
         //User attempting to register with an email that is taken
         PersonDTO fourthRegistration = new PersonDTO(1L, "Fatima", "Akbari", "200011118989", "claraeklund@kth.com", "123", "fatimakbari");
@@ -99,31 +108,94 @@ public class PersonRegistrationIntegrationTest {
 
     }
 
-        /**
-     * JUnit test that checks if an empty field is detected so that a registered
-     *          user is not saved if any of the required fields are missing.
+    /**
+     * JUnit test to simulate a situation where a user is registering with a social security number that
+     *          already exists in the database.
+     * The test checks to see whether duplicate data is detected to make sure the same user
+     *          is not registered more than once.
      */
     @Test
-    void isAFieldMissingInRegistrationForm() {
+    void isSocialSecurityNumberAlreadyInDatabase() throws Exception {
+        //New user registered with unique data fields submitted
+        PersonDTO firstRegistration = new PersonDTO(1L, "Clara", "Eklund", "202203323434", "claraeklund@kth.com", "123", "claraek");
+        personService.saveApplicant(firstRegistration);
+
+        //User attempting to register with a Social security number that is taken
+        PersonDTO thirdRegistration = new PersonDTO(1L, "Karin", "Elbert", "202203323434", "karinelb@kth.com", "123", "karin20");
+        String errorPnrTaken = personService.checkRegistrationDuplicate(thirdRegistration);
+        assertNotNull(errorPnrTaken);
+
+
+    }
+
+    /**
+     * JUnit test that checks if the name field is missing so that a user is not saved to
+     *          the database with missing data.
+     */
+    @Test
+    void isNameMissingInRegistrationForm() {
         //User attempting to submit a registration where the name is missing
         PersonDTO personMissingName = new PersonDTO(1L, "", "Eklund", "202203323434", "claraeklund@kth.com", "123", "claraek");
         assertNotNull(personService.checkEmptyRegistrationFields(personMissingName));
 
+    }
+
+    /**
+     * JUnit test that checks if the surname field is missing so that a user is not saved to
+     *          the database with missing data.
+     */
+    @Test
+    void isSurnameMissingInRegistrationForm() {
         //User attempting to submit a registration where the surname is missing
         PersonDTO personMissingSurname = new PersonDTO(1L, "Anders", "", "202012123454", "andersbo@kth.com", "123", "anders12");
         assertNotNull(personService.checkEmptyRegistrationFields(personMissingSurname));
+
+    }
+
+    /**
+     * JUnit test that checks if the Social security number field is missing so that a user
+     *          is not saved to the database with missing data.
+     */
+    @Test
+    void isSocialSecurityNumberMissingInRegistrationForm() {
 
         //User attempting to submit a registration where the Social security number is missing
         PersonDTO personMissingPnr = new PersonDTO(1L, "Karin", "Elbert", "", "karinelb@kth.com", "123", "karin20");
         assertNotNull(personService.checkEmptyRegistrationFields(personMissingPnr));
 
+    }
+
+    /**
+     * JUnit test that checks if the email field is missing so that a user is not saved to
+     *          the database with missing data.
+     */
+    @Test
+    void isEmailMissingInRegistrationForm() {
+
         //User attempting to submit a registration where the email is missing
         PersonDTO personMissingEmail = new PersonDTO(1L, "Fatima", "Akbari", "200011118989", "", "123", "fatimakbari");
         assertNotNull(personService.checkEmptyRegistrationFields(personMissingEmail));
+    }
 
+    /**
+     * JUnit test that checks if the password field is missing so that a user is not saved to
+     *          the database with missing data.
+     */
+    @Test
+    void isPasswordMissingInRegistrationForm() {
         //User attempting to submit a registration where the password is missing
         PersonDTO personMissingPassword = new PersonDTO(1L, "Elira", "Ahlborg", "200109088687", "elira21@kth.com", "", "eliraa");
         assertNotNull(personService.checkEmptyRegistrationFields(personMissingPassword));
+
+
+    }
+
+    /**
+     * JUnit test that checks if the username field is missing so that a user is not saved to
+     *          the database with missing data.
+     */
+    @Test
+    void isAFieldMissingInRegistrationForm() {
 
         //User attempting to submit a registration where the username is missing
         PersonDTO personMissingUsername = new PersonDTO(1L, "Dannie", "Kvist", "200401012343", "dankvist@kth.com", "123", "");
@@ -133,35 +205,76 @@ public class PersonRegistrationIntegrationTest {
     }
 
     /**
-     * JUnit test that tests 7 different data transfer objects from user registration
-     *          that contains different combinations of email formats.
-     * For instance if the user misses any of the combinations of local-part@domain-part,
-     *          an error message should be thrown.
-     * Finally, the last data transfer object example contains a correct email format and
-     *          checks to see that the correctEMailFormatMessage is returned when.
+     * JUnit test verifies that an email missing a local part gives an error as expected.
      */
     @Test
-    void doesTheSubmittedEmailHaveCorrectFormat() throws Exception {
+    void isEmailMissingLocalPart() throws Exception {
         PersonDTO emailMissingLocalPart = new PersonDTO(1L, "test", "", "00091738559", "@test.com", "123", "test");
-        PersonDTO emailMissingAtSign = new PersonDTO(1L, "test", "", "00091738559", "testtest.com", "123", "test");
-        PersonDTO emailMissingDomainPart = new PersonDTO(1L, "test", "", "00091738559", "test@", "123", "test");
-        PersonDTO emailMissingLocalAndAtSign = new PersonDTO(1L, "test", "", "00091738559", "test.com", "123", "test");
-        PersonDTO emailMissingLocalPartAndDomainPart = new PersonDTO(1L, "test", "", "00091738559", "@", "123", "test");
-        PersonDTO emailMissingAtSignAndDomainPart = new PersonDTO(1L, "test", "", "00091738559", "test", "123", "test");
-        PersonDTO correctEmailFormat = new PersonDTO(1L, "test", "", "00091738559", "test@test.com", "123", "test");
-
         //User attempting to submit a registration where the email is missing a local part
         assertNotEquals("", personService.checkEmailFormat(emailMissingLocalPart));
+
+    }
+
+    /**
+     * JUnit test verifies that an email missing at sign gives an error as expected.
+     */
+    @Test
+    void isEmailMissingAtSign() throws Exception {
+        PersonDTO emailMissingAtSign = new PersonDTO(1L, "test", "", "00091738559", "testtest.com", "123", "test");
         //User attempting to submit a registration where the email is missing an at sign
         assertNotEquals("", personService.checkEmailFormat(emailMissingAtSign));
+
+    }
+
+    /**
+     * JUnit test verifies that an email missing a domain part gives an error as expected.
+     */
+    @Test
+    void isEmailMissingDomainPart() throws Exception {
+        PersonDTO emailMissingDomainPart = new PersonDTO(1L, "test", "", "00091738559", "test@", "123", "test");
         //User attempting to submit a registration where the email is missing a domain part
         assertNotEquals("", personService.checkEmailFormat(emailMissingDomainPart));
+
+    }
+
+    /**
+     * JUnit test verifies that an email missing an atisng and local part gives an error as expected.
+     */
+    @Test
+    void isEmailMissingLocalAndAtSign() throws Exception {
+        PersonDTO emailMissingLocalAndAtSign = new PersonDTO(1L, "test", "", "00091738559", "test.com", "123", "test");
         //User attempting to submit a registration where the email is missing a local part and atsign
         assertNotEquals("", personService.checkEmailFormat(emailMissingLocalAndAtSign));
+    }
+
+    /**
+     * JUnit test verifies that an email missing a local and domain part gives an error as expected.
+     */
+    @Test
+    void isEmailMissingLocalPartAndDomainPart() throws Exception {
+        PersonDTO emailMissingLocalPartAndDomainPart = new PersonDTO(1L, "test", "", "00091738559", "@", "123", "test");
         //User attempting to submit a registration where the email is missing a local part and domain part
         assertNotEquals("", personService.checkEmailFormat(emailMissingLocalPartAndDomainPart));
+
+    }
+
+    /**
+     * JUnit test verifies that an email missing at sign and the domain part gives an error as expected.
+     */
+    @Test
+    void isEmailMissingAtSignAndDomainPart() throws Exception {
+        PersonDTO emailMissingAtSignAndDomainPart = new PersonDTO(1L, "test", "", "00091738559", "test", "123", "test");
         //User attempting to submit a registration where the email is missing atsign and domain part
         assertNotEquals("", personService.checkEmailFormat(emailMissingAtSignAndDomainPart));
+
+    }
+
+    /**
+     * JUnit test verifies that a correct email format is validated as expected.
+     */
+    @Test
+    void isEmailCorrect() throws Exception {
+        PersonDTO correctEmailFormat = new PersonDTO(1L, "test", "", "00091738559", "test@test.com", "123", "test");
         //User registering with a correct email format
         assertEquals("CORRECT_EMAIL", personService.checkEmailFormat(correctEmailFormat));
 

@@ -83,31 +83,134 @@ public class RegistrationControllerIntegrationTest {
     /**
      * JUnit test to simulate a situation where a user is registering with data that
      *          already exists in the database.
-     * The test checks to see whether duplicate data is detected in the database
+     * The test checks to see if a user is registering with a unique username, email and
+     *          social security number and the correct HTTP Status response is returned, to make sure
+     *          duplicate data is not saved in the database.
+     */
+    @Test
+    void newUserRegistration() throws Exception {
+        //New user registered with unique data fields submitted
+        PersonDTO firstRegistration = new PersonDTO(1L, "Clara", "Eklund", "202203323434", "claraeklund@kth.com", "123", "claraek");
+        ResponseEntity<Object> firstUserRegistration = registerController.registration(firstRegistration);
+        assertEquals(HttpStatus.OK, firstUserRegistration.getStatusCode());
+    }
+
+    /**
+     * JUnit test to simulate a situation where a user is registering with data that
+     *          already exists in the database.
+     * The test checks to see whether the username is detected in the database
      *          and the correct HTTP Status response is returned, to make sure
      *          duplicate data is not saved in the database.
      */
     @Test
-    void isApplicantAlreadyInDatabase() throws Exception {
-        //New user registered with unique data fields submitted
-        PersonDTO firstRegistration = new PersonDTO(1L, "Clara", "Eklund", "202203323434", "claraeklund@kth.com", "123", "claraek");
-        ResponseEntity<Object> firstUserRegistration = registerController.registration(firstRegistration, null);
-        assertEquals(HttpStatus.OK, firstUserRegistration.getStatusCode());
-
+    void isUsernameAlreadyInDatabase() throws Exception {
+        //Saving a unique user to the database
+        registerController.registration(new PersonDTO(1L, "Anders", "Dean", "202012123454", "andersbo@kth.com", "123", "Anders"));
         //User attempting to register with a username that is taken
-        PersonDTO secondRegistration = new PersonDTO(1L, "Anders", "Dean", "202012123454", "andersbo@kth.com", "123", "claraek");
-        ResponseEntity<Object> secondUserRegistration = registerController.registration(secondRegistration, null);
+        PersonDTO secondRegistration = new PersonDTO(1L, "Tiana", "Bell", "200101014565", "tiana@kth.com", "123", "Anders");
+        ResponseEntity<Object> secondUserRegistration = registerController.registration(secondRegistration);
         assertEquals(HttpStatus.BAD_REQUEST, secondUserRegistration.getStatusCode());
+    }
 
+    /**
+     * JUnit test to simulate a situation where a user is registering with data that
+     *          already exists in the database.
+     * The test checks to see whether the Social security number is detected in the database
+     *          and the correct HTTP Status response is returned, to make sure
+     *          duplicate data is not saved in the database.
+     */
+    @Test
+    void isSocialSecurityNumberAlreadyInDatabase() throws Exception {
+        //Saving a unique user to the database
+        registerController.registration(new PersonDTO(1L, "Anders", "Dean", "202012123454", "andersbo@kth.com", "123", "Anders"));
         //User attempting to register with a Social security number that is taken
-        PersonDTO thirdRegistration = new PersonDTO(1L, "Karin", "Elbert", "202203323434", "karinelb@kth.com", "123", "karin20");
-        ResponseEntity<Object> thirdUserRegistration = registerController.registration(thirdRegistration, null);
+        PersonDTO thirdRegistration = new PersonDTO(1L, "Karin", "Elbert", "202012123454", "karinelb@kth.com", "123", "karin20");
+        ResponseEntity<Object> thirdUserRegistration = registerController.registration(thirdRegistration);
         assertEquals(HttpStatus.BAD_REQUEST, thirdUserRegistration.getStatusCode());
 
+    }
+
+    /**
+     * JUnit test to simulate a situation where a user is registering with data that
+     *          already exists in the database.
+     * The test checks to see whether the email is detected in the database
+     *          and the correct HTTP Status response is returned, to make sure
+     *          duplicate data is not saved in the database.
+     */
+    @Test
+    void isEmailAlreadyInDatabase() throws Exception {
+        //Saving a unique user to the database
+        registerController.registration(new PersonDTO(1L, "Anders", "Dean", "202012123454", "andersbo@kth.com", "123", "Anders"));
         //User attempting to register with an email that is taken
-        PersonDTO fourthRegistration = new PersonDTO(1L, "Fatima", "Akbari", "200011118989", "claraeklund@kth.com", "123", "fatimakbari");
-        ResponseEntity<Object> fourthUserRegistration = registerController.registration(fourthRegistration, null);
+        PersonDTO fourthRegistration = new PersonDTO(1L, "Fatima", "Akbari", "200011118989", "andersbo@kth.com", "123", "fatimakbari");
+        ResponseEntity<Object> fourthUserRegistration = registerController.registration(fourthRegistration);
         assertEquals(HttpStatus.BAD_REQUEST, fourthUserRegistration.getStatusCode());
+    }
+
+    /**
+     * JUnit test missing the name field to check if the correct
+     *          HTTP Status response is returned so that a registered
+     *          user is not saved if any of the required fields are missing.
+     */
+    @Test
+    void isNameMissingInRegistrationForm() {
+        //User attempting to submit a registration where the name is missing
+        PersonDTO personMissingName = new PersonDTO(1L, "", "Eklund", "202203323434", "claraeklund@kth.com", "123", "claraek");
+        ResponseEntity<Object> firstUserRegistration = registerController.registration(personMissingName);
+        assertEquals(HttpStatus.BAD_REQUEST, firstUserRegistration.getStatusCode());
+
+    }
+
+    /**
+     * JUnit test missing the surname field to check if the correct
+     *          HTTP Status response is returned so that a registered
+     *          user is not saved if any of the required fields are missing.
+     */
+    @Test
+    void isSurnameMissingInRegistrationForm() {
+        //User attempting to submit a registration where the surname is missing
+        PersonDTO personMissingSurname = new PersonDTO(1L, "Anders", "", "202012123454", "andersbo@kth.com", "123", "anders12");
+        ResponseEntity<Object> secondUserRegistration = registerController.registration(personMissingSurname);
+        assertEquals(HttpStatus.BAD_REQUEST, secondUserRegistration.getStatusCode());
+    }
+
+    /**
+     * JUnit test missing the Social security number field to check if the correct
+     *          HTTP Status response is returned so that a registered
+     *          user is not saved if any of the required fields are missing.
+     */
+    @Test
+    void isSocialSecurityNumberMissingInRegistrationForm() {
+        //User attempting to submit a registration where the Social security number is missing
+        PersonDTO personMissingPnr = new PersonDTO(1L, "Karin", "Elbert", "", "karinelb@kth.com", "123", "karin20");
+        ResponseEntity<Object> thirdUserRegistration = registerController.registration(personMissingPnr);
+        assertEquals(HttpStatus.BAD_REQUEST, thirdUserRegistration.getStatusCode());
+    }
+
+    /**
+     * JUnit test that checks if an email field is detected and the correct
+     *          HTTP Status response is returned so that a registered
+     *          user is not saved if any of the required fields are missing.
+     */
+    @Test
+    void isEmailMissingInRegistrationForm() {
+        //User attempting to submit a registration where the email is missing
+        PersonDTO personMissingEmail = new PersonDTO(1L, "Fatima", "Akbari", "200011118989", "", "123", "fatimakbari");
+        ResponseEntity<Object> fourthUserRegistration = registerController.registration(personMissingEmail);
+        assertEquals(HttpStatus.BAD_REQUEST, fourthUserRegistration.getStatusCode());
+    }
+
+    /**
+     * JUnit test missing the password field to check if the correct
+     *          HTTP Status response is returned so that a registered
+     *          user is not saved if any of the required fields are missing.
+     */
+    @Test
+    void isPasswordMissingInRegistrationForm() {
+        //User attempting to submit a registration where the password is missing
+        PersonDTO personMissingPassword = new PersonDTO(1L, "Elira", "Ahlborg", "200109088687", "elira21@kth.com", "", "eliraa");
+        ResponseEntity<Object> fifthUserRegistration = registerController.registration(personMissingPassword);
+        assertEquals(HttpStatus.BAD_REQUEST, fifthUserRegistration.getStatusCode());
     }
 
     /**
@@ -116,83 +219,99 @@ public class RegistrationControllerIntegrationTest {
      *          user is not saved if any of the required fields are missing.
      */
     @Test
-    void isAFieldMissingInRegistrationForm() {
-        //User attempting to submit a registration where the name is missing
-        PersonDTO personMissingName = new PersonDTO(1L, "", "Eklund", "202203323434", "claraeklund@kth.com", "123", "claraek");
-        ResponseEntity<Object> firstUserRegistration = registerController.registration(personMissingName, null);
-        assertEquals(HttpStatus.BAD_REQUEST, firstUserRegistration.getStatusCode());
-
-        //User attempting to submit a registration where the surname is missing
-        PersonDTO personMissingSurname = new PersonDTO(1L, "Anders", "", "202012123454", "andersbo@kth.com", "123", "anders12");
-        ResponseEntity<Object> secondUserRegistration = registerController.registration(personMissingSurname, null);
-        assertEquals(HttpStatus.BAD_REQUEST, secondUserRegistration.getStatusCode());
-
-        //User attempting to submit a registration where the Social security number is missing
-        PersonDTO personMissingPnr = new PersonDTO(1L, "Karin", "Elbert", "", "karinelb@kth.com", "123", "karin20");
-        ResponseEntity<Object> thirdUserRegistration = registerController.registration(personMissingPnr, null);
-        assertEquals(HttpStatus.BAD_REQUEST, thirdUserRegistration.getStatusCode());
-
-        //User attempting to submit a registration where the email is missing
-        PersonDTO personMissingEmail = new PersonDTO(1L, "Fatima", "Akbari", "200011118989", "", "123", "fatimakbari");
-        ResponseEntity<Object> fourthUserRegistration = registerController.registration(personMissingEmail, null);
-        assertEquals(HttpStatus.BAD_REQUEST, fourthUserRegistration.getStatusCode());
-
-        //User attempting to submit a registration where the password is missing
-        PersonDTO personMissingPassword = new PersonDTO(1L, "Elira", "Ahlborg", "200109088687", "elira21@kth.com", "", "eliraa");
-        ResponseEntity<Object> fifthUserRegistration = registerController.registration(personMissingPassword, null);
-        assertEquals(HttpStatus.BAD_REQUEST, fifthUserRegistration.getStatusCode());
-
+    void isUsernameMissingInRegistrationForm() {
         //User attempting to submit a registration where the username is missing
         PersonDTO personMissingUsername = new PersonDTO(1L, "Dannie", "Kvist", "200403030909", "dankvist@kth.com", "123", "");
-        ResponseEntity<Object> sixthUserRegistration = registerController.registration(personMissingUsername, null);
+        ResponseEntity<Object> sixthUserRegistration = registerController.registration(personMissingUsername);
         assertEquals(HttpStatus.BAD_REQUEST, sixthUserRegistration.getStatusCode());
 
     }
 
     /**
-     * JUnit test that tests 7 different data transfer objects from user registration
-     *          that contains different combinations of email formats.
-     * For instance if the user misses any of the combinations of local-part@domain-part,
-     *          the correct HTTP Status response should be returned.
-     * Finally, the last data transfer object example contains a correct email format and
-     *          checks to see that the correct HTTP Status response is returned.
+     * JUnit test verifies that an email missing a local part returns the expected HTTP Status response.
      */
     @Test
-    void doesTheSubmittedEmailHaveCorrectFormat() throws Exception {
+    void isEmailMissingLocalPart() throws Exception {
         PersonDTO emailMissingLocalPart = new PersonDTO(1L, "Clara", "Eklund", "202203323434", "@kth.com", "123", "claraek");
-        PersonDTO emailMissingAtSign = new PersonDTO(1L, "Anders", "Dean", "202012123454", "andersbokth.com", "123", "anders12");
-        PersonDTO emailMissingDomainPart = new PersonDTO(1L, "Karin", "Elbert", "200304056787", "karinelb@", "123", "karin20");
-        PersonDTO emailMissingLocalAndAtSign = new PersonDTO(1L, "Fatima", "Akbari", "200011118989", "kth.se", "123", "fatimakbari");
-        PersonDTO emailMissingLocalPartAndDomainPart =  new PersonDTO(1L, "Elira", "Ahlborg", "200109088687", "@", "123", "eliraa");
-        PersonDTO emailMissingAtSignAndDomainPart = new PersonDTO(1L, "Andreas", "Linder", "200112124565", "andreas", "123", "test");
-        PersonDTO correctEmailFormat =new PersonDTO(1L, "Dannie", "Kvist", "200103034989", "dankvist@kth.com", "123", "dankvistt");
 
         //User attempting to submit a registration where the email is missing a local part
-        ResponseEntity<Object> firstUserRegistration = registerController.registration(emailMissingLocalPart, null);
+        ResponseEntity<Object> firstUserRegistration = registerController.registration(emailMissingLocalPart);
         assertEquals(HttpStatus.BAD_REQUEST, firstUserRegistration.getStatusCode());
 
+    }
+    /**
+     * JUnit test verifies that an email missing at sign returns the expected HTTP Status response.
+     */
+    @Test
+    void isEmailMissingAtSign() throws Exception {
+        PersonDTO emailMissingAtSign = new PersonDTO(1L, "Anders", "Dean", "202012123454", "andersbokth.com", "123", "anders12");
+
         //User attempting to submit a registration where the email is missing an at sign
-        ResponseEntity<Object> secondUserRegistration = registerController.registration(emailMissingAtSign, null);
+        ResponseEntity<Object> secondUserRegistration = registerController.registration(emailMissingAtSign);
         assertEquals(HttpStatus.BAD_REQUEST, secondUserRegistration.getStatusCode());
+    }
+
+    /**
+     * JUnit test verifies that an email missing a domain part returns the expected HTTP Status response.
+     */
+    @Test
+    void isEmailMissingDomainPart() throws Exception {
+        PersonDTO emailMissingDomainPart = new PersonDTO(1L, "Karin", "Elbert", "200304056787", "karinelb@", "123", "karin20");
 
         //User attempting to submit a registration where the email is missing a domain part
-        ResponseEntity<Object> thirdUserRegistration = registerController.registration(emailMissingDomainPart, null);
+        ResponseEntity<Object> thirdUserRegistration = registerController.registration(emailMissingDomainPart);
         assertEquals(HttpStatus.BAD_REQUEST, thirdUserRegistration.getStatusCode());
+    }
+
+    /**
+     * JUnit test verifies that an email missing a local part and at sign returns the expected HTTP Status response.
+     */
+    @Test
+    void isEmailMissingLocalAndAtSign() throws Exception {
+        PersonDTO emailMissingLocalAndAtSign = new PersonDTO(1L, "Fatima", "Akbari", "200011118989", "kth.se", "123", "fatimakbari");
+
 
         //User attempting to submit a registration where the email is missing a local part and atsign
-        ResponseEntity<Object> fourthUserRegistration = registerController.registration(emailMissingLocalAndAtSign, null);
+        ResponseEntity<Object> fourthUserRegistration = registerController.registration(emailMissingLocalAndAtSign);
         assertEquals(HttpStatus.BAD_REQUEST, fourthUserRegistration.getStatusCode());
 
+    }
+
+    /**
+     * JUnit test verifies that an email missing a local part and a domain part returns the expected HTTP Status response.
+     */
+    @Test
+    void isEmailMissingLocalPartAndDomainPart() throws Exception {
+        PersonDTO emailMissingLocalPartAndDomainPart =  new PersonDTO(1L, "Elira", "Ahlborg", "200109088687", "@", "123", "eliraa");
+
         //User attempting to submit a registration where the email is missing a local part and domain part
-        ResponseEntity<Object> fifthUserRegistration = registerController.registration(emailMissingLocalPartAndDomainPart, null);
+        ResponseEntity<Object> fifthUserRegistration = registerController.registration(emailMissingLocalPartAndDomainPart);
         assertEquals(HttpStatus.BAD_REQUEST, fifthUserRegistration.getStatusCode());
+    }
+
+    /**
+     * JUnit test verifies that an email missing aat sign and a domain part returns the expected HTTP Status response.
+     */
+    @Test
+    void isEmailMissingAtSignAndDomainPart() throws Exception {
+        PersonDTO emailMissingAtSignAndDomainPart = new PersonDTO(1L, "Andreas", "Linder", "200112124565", "andreas", "123", "test");
 
         //User attempting to submit a registration where the email is missing atsign and domain part
-        ResponseEntity<Object> sixthUserRegistration = registerController.registration(emailMissingAtSignAndDomainPart, null);
+        ResponseEntity<Object> sixthUserRegistration = registerController.registration(emailMissingAtSignAndDomainPart);
         assertEquals(HttpStatus.BAD_REQUEST, sixthUserRegistration.getStatusCode());
 
+
+    }
+
+    /**
+     * JUnit test verifies that a correct email format returns the expected HTTP Status response.
+     */
+    @Test
+    void isEmailCorrect() throws Exception {
+        PersonDTO correctEmailFormat =new PersonDTO(1L, "Dannie", "Kvist", "200103034989", "dankvist@kth.com", "123", "dankvistt");
+
         //User registering with a correct email format
-        ResponseEntity<Object> seventhUserRegistration = registerController.registration(correctEmailFormat, null);
+        ResponseEntity<Object> seventhUserRegistration = registerController.registration(correctEmailFormat);
         assertEquals(HttpStatus.OK, seventhUserRegistration.getStatusCode());
 
     }
