@@ -12,6 +12,7 @@ public class RegisterServiceApplication {
 
     /**
      * Main method used to start the register-service microservice.
+     *
      * @param args is the command-line argument.
      */
     public static void main(String[] args) {

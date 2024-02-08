@@ -21,13 +21,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * RegistrationControllerIntegration test uses TestContainers and demonstrates integration testing.
  * The tests included are:
  * 1. Checking if a user attempting to submit a username, email or social security number
- *                  returns the correct HTTP Status response.
+ * returns the correct HTTP Status response.
  * 2. Checking if the user attempting to submit a registration where one of the required fields
- *                  are missing  returns the correct HTTP Status response.
+ * are missing  returns the correct HTTP Status response.
  * 3. Checking if the user attempting to submit an email that has an incorrect format
- *                  returns the correct HTTP Status response.
+ * returns the correct HTTP Status response.
  * {@code @Transactional} ensures application is saved to the database only if
- *                  the transaction is successful.
+ * the transaction is successful.
  */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @Testcontainers
@@ -37,14 +37,11 @@ public class RegistrationControllerIntegrationTest {
     /**
      * Mocking a PostgreSQL database for the integration tests.
      * The database is configured with a specific, name, username and
-     *              password as well as the latest postgreSQL version.
+     * password as well as the latest postgreSQL version.
      * {@code @Container} sets the field as a TestContainer container.
      */
     @Container
-    private static final PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:latest")
-            .withDatabaseName("postgrestest")
-            .withUsername("postgres")
-            .withPassword("Qwerty123456!");
+    private static final PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:latest").withDatabaseName("postgrestest").withUsername("postgres").withPassword("Qwerty123456!");
 
     /**
      * PersonService is an autowired instance containing business-logic for person-related operations.
@@ -63,8 +60,9 @@ public class RegistrationControllerIntegrationTest {
     /**
      * The method sets the property JDBC URL spring.datasource.url
      * dynamically for the postgreSQL container.
+     *
      * @param dynamicPropertyRegistry adding dynamic properties.
-     * {@code @DynamicPropertySource} allows adding properties with dynamic values for test
+     *                                {@code @DynamicPropertySource} allows adding properties with dynamic values for test
      */
     @DynamicPropertySource
     public static void testProps(DynamicPropertyRegistry dynamicPropertyRegistry) {
@@ -82,10 +80,10 @@ public class RegistrationControllerIntegrationTest {
 
     /**
      * JUnit test to simulate a situation where a user is registering with data that
-     *          already exists in the database.
+     * already exists in the database.
      * The test checks to see if a user is registering with a unique username, email and
-     *          social security number and the correct HTTP Status response is returned, to make sure
-     *          duplicate data is not saved in the database.
+     * social security number and the correct HTTP Status response is returned, to make sure
+     * duplicate data is not saved in the database.
      */
     @Test
     void newUserRegistration() throws Exception {
@@ -97,10 +95,10 @@ public class RegistrationControllerIntegrationTest {
 
     /**
      * JUnit test to simulate a situation where a user is registering with data that
-     *          already exists in the database.
+     * already exists in the database.
      * The test checks to see whether the username is detected in the database
-     *          and the correct HTTP Status response is returned, to make sure
-     *          duplicate data is not saved in the database.
+     * and the correct HTTP Status response is returned, to make sure
+     * duplicate data is not saved in the database.
      */
     @Test
     void isUsernameAlreadyInDatabase() throws Exception {
@@ -114,10 +112,10 @@ public class RegistrationControllerIntegrationTest {
 
     /**
      * JUnit test to simulate a situation where a user is registering with data that
-     *          already exists in the database.
+     * already exists in the database.
      * The test checks to see whether the Social security number is detected in the database
-     *          and the correct HTTP Status response is returned, to make sure
-     *          duplicate data is not saved in the database.
+     * and the correct HTTP Status response is returned, to make sure
+     * duplicate data is not saved in the database.
      */
     @Test
     void isSocialSecurityNumberAlreadyInDatabase() throws Exception {
@@ -132,10 +130,10 @@ public class RegistrationControllerIntegrationTest {
 
     /**
      * JUnit test to simulate a situation where a user is registering with data that
-     *          already exists in the database.
+     * already exists in the database.
      * The test checks to see whether the email is detected in the database
-     *          and the correct HTTP Status response is returned, to make sure
-     *          duplicate data is not saved in the database.
+     * and the correct HTTP Status response is returned, to make sure
+     * duplicate data is not saved in the database.
      */
     @Test
     void isEmailAlreadyInDatabase() throws Exception {
@@ -149,8 +147,8 @@ public class RegistrationControllerIntegrationTest {
 
     /**
      * JUnit test missing the name field to check if the correct
-     *          HTTP Status response is returned so that a registered
-     *          user is not saved if any of the required fields are missing.
+     * HTTP Status response is returned so that a registered
+     * user is not saved if any of the required fields are missing.
      */
     @Test
     void isNameMissingInRegistrationForm() {
@@ -163,8 +161,8 @@ public class RegistrationControllerIntegrationTest {
 
     /**
      * JUnit test missing the surname field to check if the correct
-     *          HTTP Status response is returned so that a registered
-     *          user is not saved if any of the required fields are missing.
+     * HTTP Status response is returned so that a registered
+     * user is not saved if any of the required fields are missing.
      */
     @Test
     void isSurnameMissingInRegistrationForm() {
@@ -176,8 +174,8 @@ public class RegistrationControllerIntegrationTest {
 
     /**
      * JUnit test missing the Social security number field to check if the correct
-     *          HTTP Status response is returned so that a registered
-     *          user is not saved if any of the required fields are missing.
+     * HTTP Status response is returned so that a registered
+     * user is not saved if any of the required fields are missing.
      */
     @Test
     void isSocialSecurityNumberMissingInRegistrationForm() {
@@ -189,8 +187,8 @@ public class RegistrationControllerIntegrationTest {
 
     /**
      * JUnit test that checks if an email field is detected and the correct
-     *          HTTP Status response is returned so that a registered
-     *          user is not saved if any of the required fields are missing.
+     * HTTP Status response is returned so that a registered
+     * user is not saved if any of the required fields are missing.
      */
     @Test
     void isEmailMissingInRegistrationForm() {
@@ -202,8 +200,8 @@ public class RegistrationControllerIntegrationTest {
 
     /**
      * JUnit test missing the password field to check if the correct
-     *          HTTP Status response is returned so that a registered
-     *          user is not saved if any of the required fields are missing.
+     * HTTP Status response is returned so that a registered
+     * user is not saved if any of the required fields are missing.
      */
     @Test
     void isPasswordMissingInRegistrationForm() {
@@ -215,8 +213,8 @@ public class RegistrationControllerIntegrationTest {
 
     /**
      * JUnit test that checks if an empty field is detected and the correct
-     *          HTTP Status response is returned so that a registered
-     *          user is not saved if any of the required fields are missing.
+     * HTTP Status response is returned so that a registered
+     * user is not saved if any of the required fields are missing.
      */
     @Test
     void isUsernameMissingInRegistrationForm() {
@@ -239,6 +237,7 @@ public class RegistrationControllerIntegrationTest {
         assertEquals(HttpStatus.BAD_REQUEST, firstUserRegistration.getStatusCode());
 
     }
+
     /**
      * JUnit test verifies that an email missing at sign returns the expected HTTP Status response.
      */
@@ -282,7 +281,7 @@ public class RegistrationControllerIntegrationTest {
      */
     @Test
     void isEmailMissingLocalPartAndDomainPart() throws Exception {
-        PersonDTO emailMissingLocalPartAndDomainPart =  new PersonDTO(1L, "Elira", "Ahlborg", "200109088687", "@", "123", "eliraa");
+        PersonDTO emailMissingLocalPartAndDomainPart = new PersonDTO(1L, "Elira", "Ahlborg", "200109088687", "@", "123", "eliraa");
 
         //User attempting to submit a registration where the email is missing a local part and domain part
         ResponseEntity<Object> fifthUserRegistration = registerController.registration(emailMissingLocalPartAndDomainPart);
@@ -308,7 +307,7 @@ public class RegistrationControllerIntegrationTest {
      */
     @Test
     void isEmailCorrect() throws Exception {
-        PersonDTO correctEmailFormat =new PersonDTO(1L, "Dannie", "Kvist", "200103034989", "dankvist@kth.com", "123", "dankvistt");
+        PersonDTO correctEmailFormat = new PersonDTO(1L, "Dannie", "Kvist", "200103034989", "dankvist@kth.com", "123", "dankvistt");
 
         //User registering with a correct email format
         ResponseEntity<Object> seventhUserRegistration = registerController.registration(correctEmailFormat);

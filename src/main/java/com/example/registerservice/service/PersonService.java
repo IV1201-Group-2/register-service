@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * PersonService is a service class meant to handle the business-logic
- *                      specific to person-related operations.
+ * specific to person-related operations.
  */
 @Service
 public class PersonService {
@@ -28,8 +28,9 @@ public class PersonService {
     /**
      * Constructor for the personService class.
      * {@code @Autowired} provides automatic dependency injection.
-     * @param encoder is responsible for encoding passwords before
-     *                they are inserted into the database.
+     *
+     * @param encoder          is responsible for encoding passwords before
+     *                         they are inserted into the database.
      * @param personRepository handles handles data retrieval/modification operations.
      */
     @Autowired
@@ -40,30 +41,24 @@ public class PersonService {
 
     /**
      * Saves a person when they have correctly registered/passed
-     *                  validation checks to the application.
+     * validation checks to the application.
      * {@code @Transactional} ensures application is saved to the
-     *                  database only if the transaction is successful.
+     * database only if the transaction is successful.
+     *
      * @param personDTO Data transfer object
      *                  representing users submitted information.
      */
     @Transactional
     public void saveApplicant(PersonDTO personDTO) {
         String hashedPassword = encoder.encode(personDTO.getPassword());
-        Person person = Person.builder()
-                .name(personDTO.getName())
-                .surname(personDTO.getSurname())
-                .pnr(personDTO.getPnr())
-                .email(personDTO.getEmail())
-                .password(hashedPassword)
-                .role_id(2)
-                .username(personDTO.getUsername())
-                .build();
+        Person person = Person.builder().name(personDTO.getName()).surname(personDTO.getSurname()).pnr(personDTO.getPnr()).email(personDTO.getEmail()).password(hashedPassword).role_id(2).username(personDTO.getUsername()).build();
         personRepository.save(person);
     }
 
     /**
      * Checks if the username submitted during registration is
-     *                  already taken by another user in the database.
+     * already taken by another user in the database.
+     *
      * @param username that is compared to other usernames in
      *                 the database to check for risk of duplication.
      * @return true if no user was found to have the same username.
@@ -75,7 +70,8 @@ public class PersonService {
 
     /**
      * Checks if the email submitted during registration
-     *              is already taken by another user in the database.
+     * is already taken by another user in the database.
+     *
      * @param email that is compared to other email in
      *              the database to check for risk of duplication.
      * @return true if no user was found to have the same email.
@@ -86,7 +82,8 @@ public class PersonService {
 
     /**
      * Checks if the social security numbers submitted during
-     *            registration is already taken by another user in the database.
+     * registration is already taken by another user in the database.
+     *
      * @param pnr that is compared to other social security
      *            numbers in the database to check for risk of duplication.
      * @return true if no user was found to have the same social security number.
@@ -97,7 +94,8 @@ public class PersonService {
 
     /**
      * Checks if the email submitted during registration has the correct
-     *                   format containing "local-part@domain-part".
+     * format containing "local-part@domain-part".
+     *
      * @param checkEmail is the submitted email that passes logic checking if the email has
      *                   a local part, @ and a domain part.
      * @return true if the email has the correct format.
@@ -113,13 +111,14 @@ public class PersonService {
 
     /**
      * Checks if the user attempting to register is submitting a username,
-     *                  social security number or an email that is already
-     *                  taken by an older user.
+     * social security number or an email that is already
+     * taken by an older user.
+     *
      * @param personDTO Data transfer object representing users
      *                  submitted information.
      * @return a unique error message if the username is taken,
-     *                  email is taken or
-     *                  the social security number is taken.
+     * email is taken or
+     * the social security number is taken.
      */
     public String checkRegistrationDuplicate(PersonDTO personDTO) {
         String checkUsername = personDTO.getUsername();
@@ -138,10 +137,11 @@ public class PersonService {
 
     /**
      * Provides logic for checking if any of the fields required during
-     *                  registration is left empty when submitted.
+     * registration is left empty when submitted.
+     *
      * @param personDTO Data transfer object representing users submitted information.
      * @return a unique error message specific to each field that might
-     *                  be missing when submitted.
+     * be missing when submitted.
      */
     public String checkEmptyRegistrationFields(PersonDTO personDTO) {
 
@@ -170,9 +170,10 @@ public class PersonService {
 
     /**
      * Checks the email format submitted during registration.
+     *
      * @param personDTO Data transfer object representing users submitted information.
      * @return an error message if the email format is wrong, and a
-     *                  correct email format message if it is right.
+     * correct email format message if it is right.
      */
     public String checkEmailFormat(PersonDTO personDTO) {
         String checkEmail = personDTO.getEmail();

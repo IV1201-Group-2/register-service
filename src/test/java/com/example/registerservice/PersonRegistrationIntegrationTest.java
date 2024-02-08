@@ -5,8 +5,6 @@ import com.example.registerservice.service.PersonService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,11 +18,11 @@ import static org.junit.jupiter.api.Assertions.*;
  * RegisterControllerIntegrationTest uses TestContainers and demonstrates integration testing.
  * The tests included are:
  * 1. Checking if a user is registering with a username, social security number or email that
- *              already exists in the database.
+ * already exists in the database.
  * 2. Checking if the user submitted a registration where one of the required fields are missing.
  * 3.           Checking if the user submitted a correct email format.
  * {@code @Transactional} ensures application is saved to the database only if
- *              the transaction is successful.
+ * the transaction is successful.
  */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @Testcontainers
@@ -34,14 +32,11 @@ public class PersonRegistrationIntegrationTest {
     /**
      * Mocking a PostgreSQL database for the integration tests.
      * The database is configured with a specific, name, username and
-     *          password as well as the latest postgreSQL version.
+     * password as well as the latest postgreSQL version.
      * {@code @Container} sets the field as a TestContainer container.
      */
     @Container
-    private static final PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:latest")
-            .withDatabaseName("postgresg2")
-            .withUsername("postgres")
-            .withPassword("Qwerty123456!");
+    private static final PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:latest").withDatabaseName("postgresg2").withUsername("postgres").withPassword("Qwerty123456!");
 
     /**
      * PersonService is an autowired instance contains business-logic for person-related operations.
@@ -53,8 +48,9 @@ public class PersonRegistrationIntegrationTest {
     /**
      * The method sets the property JDBC URL spring.datasource.url
      * dynamically for the postgreSQL container.
+     *
      * @param dynamicPropertyRegistry adding dynamic properties.
-     * {@code @DynamicPropertySource} allows adding properties with dynamic values for test
+     *                                {@code @DynamicPropertySource} allows adding properties with dynamic values for test
      */
     @DynamicPropertySource
     public static void testProps(DynamicPropertyRegistry dynamicPropertyRegistry) {
@@ -72,9 +68,9 @@ public class PersonRegistrationIntegrationTest {
 
     /**
      * JUnit test to simulate a situation where a user is registering with a username that
-     *          already exists in the database.
+     * already exists in the database.
      * The test checks to see whether duplicate data is detected to make sure the same user
-     *          is not registered more than once.
+     * is not registered more than once.
      */
     @Test
     void isUsernameAlreadyInDatabase() throws Exception {
@@ -91,9 +87,9 @@ public class PersonRegistrationIntegrationTest {
 
     /**
      * JUnit test to simulate a situation where a user is registering with an email that
-     *          already exists in the database.
+     * already exists in the database.
      * The test checks to see whether duplicate data is detected to make sure the same user
-     *          is not registered more than once.
+     * is not registered more than once.
      */
     @Test
     void isEmailAlreadyInDatabase() throws Exception {
@@ -110,9 +106,9 @@ public class PersonRegistrationIntegrationTest {
 
     /**
      * JUnit test to simulate a situation where a user is registering with a social security number that
-     *          already exists in the database.
+     * already exists in the database.
      * The test checks to see whether duplicate data is detected to make sure the same user
-     *          is not registered more than once.
+     * is not registered more than once.
      */
     @Test
     void isSocialSecurityNumberAlreadyInDatabase() throws Exception {
@@ -130,7 +126,7 @@ public class PersonRegistrationIntegrationTest {
 
     /**
      * JUnit test that checks if the name field is missing so that a user is not saved to
-     *          the database with missing data.
+     * the database with missing data.
      */
     @Test
     void isNameMissingInRegistrationForm() {
@@ -142,7 +138,7 @@ public class PersonRegistrationIntegrationTest {
 
     /**
      * JUnit test that checks if the surname field is missing so that a user is not saved to
-     *          the database with missing data.
+     * the database with missing data.
      */
     @Test
     void isSurnameMissingInRegistrationForm() {
@@ -154,7 +150,7 @@ public class PersonRegistrationIntegrationTest {
 
     /**
      * JUnit test that checks if the Social security number field is missing so that a user
-     *          is not saved to the database with missing data.
+     * is not saved to the database with missing data.
      */
     @Test
     void isSocialSecurityNumberMissingInRegistrationForm() {
@@ -167,7 +163,7 @@ public class PersonRegistrationIntegrationTest {
 
     /**
      * JUnit test that checks if the email field is missing so that a user is not saved to
-     *          the database with missing data.
+     * the database with missing data.
      */
     @Test
     void isEmailMissingInRegistrationForm() {
@@ -179,7 +175,7 @@ public class PersonRegistrationIntegrationTest {
 
     /**
      * JUnit test that checks if the password field is missing so that a user is not saved to
-     *          the database with missing data.
+     * the database with missing data.
      */
     @Test
     void isPasswordMissingInRegistrationForm() {
@@ -192,7 +188,7 @@ public class PersonRegistrationIntegrationTest {
 
     /**
      * JUnit test that checks if the username field is missing so that a user is not saved to
-     *          the database with missing data.
+     * the database with missing data.
      */
     @Test
     void isAFieldMissingInRegistrationForm() {

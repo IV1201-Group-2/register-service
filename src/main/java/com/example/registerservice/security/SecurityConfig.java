@@ -18,6 +18,7 @@ public class SecurityConfig {
 
     /**
      * A bean is used for encoding passwords.
+     *
      * @return BCryptPasswordEncoder bean.
      */
     @Bean
@@ -26,19 +27,14 @@ public class SecurityConfig {
     }
 
     /**
-     *
      * @param http is the HttpSecurity that will be configured.
      * @return The configured filter chain.
      * @throws Exception thrown if an error occurs during the
-     *              SecurityFilterChain configuration.
+     *                   SecurityFilterChain configuration.
      */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-                .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(requests -> requests
-                        .requestMatchers("/api/register", "/error", "/api/test").permitAll()
-                );
+        http.csrf(AbstractHttpConfigurer::disable).authorizeHttpRequests(requests -> requests.requestMatchers("/api/register", "/error", "/api/test").permitAll());
 
         return http.build();
     }

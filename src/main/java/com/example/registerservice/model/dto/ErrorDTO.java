@@ -13,12 +13,13 @@ public class ErrorDTO {
 
     /**
      * Error is responsible for providing specific
-     *              error messages during user registration.
+     * error messages during user registration.
      */
     private final String error;
 
     /**
      * Constructor for the Error data transfer object.
+     *
      * @param error responsible for providing specific
      *              error messages during user registration.
      */

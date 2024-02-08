@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
  * {@code @AllArgsConstructor} creates and initializes all fields of an object in one class.
  * {@code @Entity} indicates that the following class is an entity that maps to a table in the database.
  * {@code @Builder} creates a builder for the class for a more readable code syntax.
+ *
  * @Table(name = "person") hardcoded the table name of this class in the database to "person".
  */
 @Data
@@ -26,7 +27,7 @@ public class Person {
     /**
      * {@code @Id} marks the person_id as the primary key
      * {@code @GeneratedValue} sets the person_id to be automatically generated and
-     *                         incremented by the database.
+     * incremented by the database.
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

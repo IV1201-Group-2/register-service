@@ -12,12 +12,13 @@ public class WebConfiguration implements WebMvcConfigurer {
 
     /**
      * Method allows Cross-origin requests, in order for any HTTP
-     *          method and any origin to be able to make requests.
+     * method and any origin to be able to make requests.
      * {@code @Autowired} provides automatic dependency injection.
+     *
      * @param registration , registers CORS mappings.
      */
     @Override
-    public void addCorsMappings(CorsRegistry registration){
+    public void addCorsMappings(CorsRegistry registration) {
         registration.addMapping("/**").allowedMethods("*");
     }
 }
