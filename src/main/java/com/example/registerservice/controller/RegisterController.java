@@ -69,7 +69,7 @@ public class RegisterController {
 
             // Validation process based on if user submitted information with missing field/s
             // Or if user is already registered and is submitting data present in the database
-            // Or if the email format is wrong, for example missing any of the 3: (local-part)(@)(domain-part).
+            // Or if the email format is wrong, for example missing any of the 3: (local-part)(@)(domain-part)
             if (emptyFieldErrorMessage != null) {
                 return new ResponseEntity<>(new ErrorDTO(emptyFieldErrorMessage), HttpStatus.BAD_REQUEST);
             } else if (duplicateFieldErrorMessage != null) {
