@@ -48,6 +48,3 @@ jobs:
       #Checkstyle
       - name: linting
         run: mvn checkstyle:check
-
-      - name: Switch to develop
-        run: git fetch origin develop
