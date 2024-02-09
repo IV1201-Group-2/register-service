@@ -35,7 +35,8 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: test-report
-        path: target/site/jacoco/index.html
+        path: |
+          jacoco-test.xml
 
     - name: static analysis
       run: mvn spotbugs:check
