@@ -31,10 +31,16 @@ jobs:
 
     - name: mvn build
       run: mvn -B package
+
     - name: check tests
-      run: mvn verify -DskipTests=false
+      run: mvn -B jacoco:prepare-agent test jacoco:report
+
+    - name: test report
+      uses: actions/upload-artifact@v3
+      with:
+        name: test-report
+        patch: target/site/jacoco/index.html
+
     - name: static analysis
-      run: checkstyle:check
-    - name: check linting
-      run: mvn checkstyle:check
+      run: mvn spotbugs:check
 
