@@ -1,4 +1,4 @@
-name: CI
+name: Merge a feature branch to develop upon passing CI
 
 # Controls when the workflow will run
 on:
