@@ -32,7 +32,9 @@ jobs:
     - name: mvn build
       run: mvn -B package
     - name: check tests
-      run: mvn checkstyle:check
+      run: mvn verify -DskipTests=false
+    - name: static analysis
+      run: sonar-scanner
     - name: check linting
-      run: mvn spotless:check
+      run: mvn checkstyle:check
 
