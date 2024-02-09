@@ -53,7 +53,6 @@ jobs:
       - name: CI passing merge to develop
         if: success()
         run: |
-          git fetch origin
-          git checkout develop
-          git merge --no-ff ${{ github.ref }}
-          git push origin develop
+           git checkout develop
+           git merge --no-ff ${{ github.ref }}
+           git push origin develop
