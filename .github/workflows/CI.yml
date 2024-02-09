@@ -49,6 +49,9 @@ jobs:
       - name: linting
         run: mvn checkstyle:check
 
+      - name: Switch to develop
+        run: git fetch origin develop
+
       #Merge only if all the tests above pass
       - name: CI passing merge to develop
         if: success()
