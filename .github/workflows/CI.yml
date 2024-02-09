@@ -25,12 +25,15 @@ jobs:
           distribution: 'adopt'
           java-package: 'jdk'
 
+      # Building maven
       - name: mvn build
         run: mvn -B package
 
+      # Running integration tests together with jacoco report tool
       - name: check tests
         run: mvn -B jacoco:prepare-agent test jacoco:report
 
+      # Creating an artifact
       - name: test report
         uses: actions/upload-artifact@v3
         with:
@@ -38,12 +41,15 @@ jobs:
           path: |
             target/site/jacoco/*
 
+      # Spotbug static analyser
       - name: static analysis
         run: mvn spotbugs:check
 
+      #Checkstyle linter
       - name: linting
         run: mvn checkstyle:check
 
+      #Merge only if all the tests above pass
       - name: CI passing merge to develop
         if: success()
         run: |
