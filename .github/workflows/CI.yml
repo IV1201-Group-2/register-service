@@ -39,7 +39,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: test-report
-        patch: target/site/jacoco/index.html
+        path: target/site/jacoco/index.html
 
     - name: static analysis
       run: mvn spotbugs:check
