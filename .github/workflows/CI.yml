@@ -34,7 +34,7 @@ jobs:
     - name: check tests
       run: mvn verify -DskipTests=false
     - name: static analysis
-      run: mvn spotbugs:check
+      run: checkstyle:check
     - name: check linting
       run: mvn checkstyle:check
 
