@@ -7,6 +7,7 @@ import com.example.registerservice.service.PersonService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -78,7 +79,7 @@ public class RegisterController {
             }
             // User is saved to the database if the validation process is passed with no errors.
             personService.saveApplicant(personDTO);
-            return new ResponseEntity<>(null, HttpStatus.OK);
+            return new ResponseEntity<>(new LinkedMultiValueMap<>(), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(new ErrorDTO("INVALID_OPERATION"), HttpStatus.BAD_REQUEST);
         }

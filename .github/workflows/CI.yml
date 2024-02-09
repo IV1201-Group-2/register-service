@@ -36,7 +36,7 @@ jobs:
         with:
           name: test-report
           path: |
-            jacoco-test.xml
+            target/site/jacoco/*
 
       - name: static analysis
         run: mvn spotbugs:check
@@ -44,3 +44,10 @@ jobs:
       - name: linting
         run: mvn checkstyle:check
 
+      - name: CI passing merge to develop
+        if: success()
+        run: |
+          git fetch origin
+          git checkout develop
+          git merge --no-ff ${{ github.ref }}
+          git push origin develop
