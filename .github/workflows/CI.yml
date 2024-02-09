@@ -18,29 +18,44 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-    - uses: actions/checkout@v4
-    - uses: actions/setup-java@v3
-      with:
-        java-version: '21'
-        distribution: 'adopt'
-        java-package: 'jdk'
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: 'adopt'
+          java-package: 'jdk'
 
-    - name: mvn build
-      run: mvn -B package
+      # Building maven
+      - name: mvn build
+        run: mvn -B package
 
-    - name: check tests
-      run: mvn -B jacoco:prepare-agent test jacoco:report
+      # Running integration tests together with jacoco report tool
+      - name: check tests
+        run: mvn -B jacoco:prepare-agent test jacoco:report
 
-    - name: test report
-      uses: actions/upload-artifact@v3
-      with:
-        name: test-report
-        path: |
-          jacoco-test.xml
+      # Creating an artifact
+      - name: test report
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-report
+          path: |
+            target/site/jacoco/*
 
-    - name: static analysis
-      run: mvn spotbugs:check
+      # Spotbug static analyser
+      - name: static analysis
+        run: mvn spotbugs:check
 
-    - name: linting
-      run: mvn checkstyle:check
+      #Checkstyle linter
+      - name: linting
+        run: mvn checkstyle:check
 
+      - name: Switch to develop
+        run: git fetch origin develop
+
+      #Merge only if all the tests above pass
+      - name: CI passing merge to develop
+        if: success()
+        run: |
+          git checkout develop
+          git merge --no-ff ${{ github.ref }}
+          git push origin develop
