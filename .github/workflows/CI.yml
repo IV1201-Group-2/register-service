@@ -29,11 +29,11 @@ jobs:
       - name: mvn build
         run: mvn -B package
 
-      # Running integration tests together with jacoco report tool
+      # Running integration tests together with jacoco
       - name: check tests
         run: mvn -B jacoco:prepare-agent test jacoco:report
 
-      # Creating an artifact
+      # Report
       - name: test report
         uses: actions/upload-artifact@v3
         with:
@@ -41,21 +41,13 @@ jobs:
           path: |
             target/site/jacoco/*
 
-      # Spotbug static analyser
+      # Spotbug
       - name: static analysis
         run: mvn spotbugs:check
 
-      #Checkstyle linter
+      #Checkstyle
       - name: linting
         run: mvn checkstyle:check
 
       - name: Switch to develop
         run: git fetch origin develop
-
-      #Merge only if all the tests above pass
-      - name: CI passing merge to develop
-        if: success()
-        run: |
-           git checkout develop
-           git merge --no-ff ${{ github.ref }}
-           git push origin develop
