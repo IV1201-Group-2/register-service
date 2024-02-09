@@ -44,3 +44,6 @@ jobs:
     - name: static analysis
       run: mvn spotbugs:check
 
+    - name: linting
+      run: mvn checkstyle:check
+
