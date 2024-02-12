@@ -60,8 +60,6 @@ public class RegisterController {
     @PostMapping(value = "/api/register", produces = "application/json")
     @ResponseBody
     public ResponseEntity<Object> registration(@RequestBody PersonDTO personDTO) {
-
-        try {
             // Error messages based on users input.
             String emptyFieldErrorMessage = personService.checkEmptyRegistrationFields(personDTO);
             String duplicateFieldErrorMessage = personService.checkRegistrationDuplicate(personDTO);
@@ -80,8 +78,5 @@ public class RegisterController {
             // User is saved to the database if the validation process is passed with no errors.
             personService.saveApplicant(personDTO);
             return new ResponseEntity<>(new LinkedMultiValueMap<>(), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(new ErrorDTO("INVALID_OPERATION"), HttpStatus.BAD_REQUEST);
-        }
     }
 }
