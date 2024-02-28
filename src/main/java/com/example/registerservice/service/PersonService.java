@@ -1,6 +1,5 @@
 package com.example.registerservice.service;
 
-import com.example.registerservice.controller.RegisterController;
 import com.example.registerservice.model.Person;
 import com.example.registerservice.model.dto.PersonDTO;
 import com.example.registerservice.repository.PersonRepository;
@@ -87,7 +86,7 @@ public class PersonService {
      * @return true if no user was found to have the same email.
      */
     private boolean emailAvailable(String email) {
-        boolean  emailAvailable = personRepository.findByEmail(email) == null;
+        boolean emailAvailable = personRepository.findByEmail(email) == null;
         logger.debug("Checking if email: {} is taken: {}", email, emailAvailable);
         return emailAvailable;
 

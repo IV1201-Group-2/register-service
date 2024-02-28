@@ -264,9 +264,8 @@ public class RegistrationControllerIntegrationTest {
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.addHeader("X-Forwarded-For", "127.0.0.1");
 
-        PersonDTO emailMissingLocalPart = new PersonDTO(1L, "Clara", "Eklund", "202203323434", "@kth.com", "123", "claraek");
-
         //User attempting to submit a registration where the email is missing a local part
+        PersonDTO emailMissingLocalPart = new PersonDTO(1L, "Clara", "Eklund", "202203323434", "@kth.com", "123", "claraek");
         ResponseEntity<Object> firstUserRegistration = registerController.registration(emailMissingLocalPart, request);
         assertEquals(HttpStatus.BAD_REQUEST, firstUserRegistration.getStatusCode());
 
@@ -280,9 +279,8 @@ public class RegistrationControllerIntegrationTest {
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.addHeader("X-Forwarded-For", "127.0.0.1");
 
-        PersonDTO emailMissingAtSign = new PersonDTO(1L, "Anders", "Dean", "202012123454", "andersbokth.com", "123", "anders12");
-
         //User attempting to submit a registration where the email is missing an at sign
+        PersonDTO emailMissingAtSign = new PersonDTO(1L, "Anders", "Dean", "202012123454", "andersbokth.com", "123", "anders12");
         ResponseEntity<Object> secondUserRegistration = registerController.registration(emailMissingAtSign, request);
         assertEquals(HttpStatus.BAD_REQUEST, secondUserRegistration.getStatusCode());
     }
@@ -295,9 +293,8 @@ public class RegistrationControllerIntegrationTest {
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.addHeader("X-Forwarded-For", "127.0.0.1");
 
-        PersonDTO emailMissingDomainPart = new PersonDTO(1L, "Karin", "Elbert", "200304056787", "karinelb@", "123", "karin20");
-
         //User attempting to submit a registration where the email is missing a domain part
+        PersonDTO emailMissingDomainPart = new PersonDTO(1L, "Karin", "Elbert", "200304056787", "karinelb@", "123", "karin20");
         ResponseEntity<Object> thirdUserRegistration = registerController.registration(emailMissingDomainPart, request);
         assertEquals(HttpStatus.BAD_REQUEST, thirdUserRegistration.getStatusCode());
     }
@@ -310,10 +307,8 @@ public class RegistrationControllerIntegrationTest {
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.addHeader("X-Forwarded-For", "127.0.0.1");
 
-        PersonDTO emailMissingLocalAndAtSign = new PersonDTO(1L, "Fatima", "Akbari", "200011118989", "kth.se", "123", "fatimakbari");
-
-
         //User attempting to submit a registration where the email is missing a local part and atsign
+        PersonDTO emailMissingLocalAndAtSign = new PersonDTO(1L, "Fatima", "Akbari", "200011118989", "kth.se", "123", "fatimakbari");
         ResponseEntity<Object> fourthUserRegistration = registerController.registration(emailMissingLocalAndAtSign, request);
         assertEquals(HttpStatus.BAD_REQUEST, fourthUserRegistration.getStatusCode());
 
@@ -327,9 +322,8 @@ public class RegistrationControllerIntegrationTest {
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.addHeader("X-Forwarded-For", "127.0.0.1");
 
-        PersonDTO emailMissingLocalPartAndDomainPart = new PersonDTO(1L, "Elira", "Ahlborg", "200109088687", "@", "123", "eliraa");
-
         //User attempting to submit a registration where the email is missing a local part and domain part
+        PersonDTO emailMissingLocalPartAndDomainPart = new PersonDTO(1L, "Elira", "Ahlborg", "200109088687", "@", "123", "eliraa");
         ResponseEntity<Object> fifthUserRegistration = registerController.registration(emailMissingLocalPartAndDomainPart, request);
         assertEquals(HttpStatus.BAD_REQUEST, fifthUserRegistration.getStatusCode());
     }
@@ -342,9 +336,8 @@ public class RegistrationControllerIntegrationTest {
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.addHeader("X-Forwarded-For", "127.0.0.1");
 
-        PersonDTO emailMissingAtSignAndDomainPart = new PersonDTO(1L, "Andreas", "Linder", "200112124565", "andreas", "123", "test");
-
         //User attempting to submit a registration where the email is missing atsign and domain part
+        PersonDTO emailMissingAtSignAndDomainPart = new PersonDTO(1L, "Andreas", "Linder", "200112124565", "andreas", "123", "test");
         ResponseEntity<Object> sixthUserRegistration = registerController.registration(emailMissingAtSignAndDomainPart, request);
         assertEquals(HttpStatus.BAD_REQUEST, sixthUserRegistration.getStatusCode());
 
@@ -359,9 +352,8 @@ public class RegistrationControllerIntegrationTest {
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.addHeader("X-Forwarded-For", "127.0.0.1");
 
-        PersonDTO correctEmailFormat = new PersonDTO(1L, "Dannie", "Kvist", "200103034989", "dankvist@kth.com", "123", "dankvistt");
-
         //User registering with a correct email format
+        PersonDTO correctEmailFormat = new PersonDTO(1L, "Dannie", "Kvist", "200103034989", "dankvist@kth.com", "123", "dankvistt");
         ResponseEntity<Object> seventhUserRegistration = registerController.registration(correctEmailFormat, request);
         assertEquals(HttpStatus.OK, seventhUserRegistration.getStatusCode());
 

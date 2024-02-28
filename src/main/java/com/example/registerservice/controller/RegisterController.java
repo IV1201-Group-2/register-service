@@ -5,6 +5,7 @@ import com.example.registerservice.model.dto.ErrorDTO;
 import com.example.registerservice.model.dto.PersonDTO;
 import com.example.registerservice.service.PersonService;
 import jakarta.servlet.http.HttpServletRequest;
+import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.apache.logging.log4j.LogManager;
 
 /**
  * Registration controller handles HTTP requests and
@@ -25,7 +25,7 @@ import org.apache.logging.log4j.LogManager;
 public class RegisterController {
 
     /**
-     * Logger to log events in register-service.
+     * Logger to log events in the Controller layer.
      */
     private static final Logger logger = LogManager.getLogger(RegisterController.class);
 
@@ -67,45 +67,37 @@ public class RegisterController {
     @PostMapping(value = "/api/register", produces = "application/json")
     @ResponseBody
     public ResponseEntity<Object> registration(@RequestBody PersonDTO personDTO, HttpServletRequest request) {
-            // IP of the person attempting to register
-            String IP = request.getRemoteAddr();
+        // IP of the person attempting to register
+        String IP = request.getRemoteAddr();
 
-            // Error messages based on users input.
-            String emptyFieldErrorMessage = personService.checkEmptyRegistrationFields(personDTO);
-            String duplicateFieldErrorMessage = personService.checkRegistrationDuplicate(personDTO);
-            String emailFormatErrorMessage = personService.checkEmailFormat(personDTO);
+        // Error messages based on users input.
+        String emptyFieldErrorMessage = personService.checkEmptyRegistrationFields(personDTO);
+        String duplicateFieldErrorMessage = personService.checkRegistrationDuplicate(personDTO);
+        String emailFormatErrorMessage = personService.checkEmailFormat(personDTO);
 
-            // Validation process based on if user submitted information with missing field/s
-            // Or if user is already registered and is submitting data present in the database
-            // Or if the email format is wrong, for example missing any of the 3: (local-part)(@)(domain-part)
-            if (emptyFieldErrorMessage != null) {
+        // Validation process based on if user submitted information with missing field/s
+        // Or if user is already registered and is submitting data present in the database
+        // Or if the email format is wrong, for example missing any of the 3: (local-part)(@)(domain-part)
+        if (emptyFieldErrorMessage != null) {
 
-                logger.error("Registration failed, with one/more required fields left empty " +
-                        " name: {} surname: {} pnr: {} email: {} password: {} username {} ",
-                        personDTO.getName(), personDTO.getSurname(), personDTO.getPnr(), personDTO.getEmail(),
-                        personDTO.getPassword(), personDTO.getUsername());
+            logger.error("Registration failed, with one/more required fields left empty " + " name: {} surname: {} pnr: {} email: {} password: {} username {} ", personDTO.getName(), personDTO.getSurname(), personDTO.getPnr(), personDTO.getEmail(), personDTO.getPassword(), personDTO.getUsername());
 
-                return new ResponseEntity<>(new ErrorDTO(emptyFieldErrorMessage), HttpStatus.BAD_REQUEST);
-            } else if (duplicateFieldErrorMessage != null) {
-                switch (duplicateFieldErrorMessage) {
-                    case "EMAIL_TAKEN" ->
-                            logger.error("Registration failed due to taken email: {}", personDTO.getEmail());
-                    case "PNR_TAKEN" ->
-                            logger.error("Registration failed due to taken pnr: {}", personDTO.getPnr());
-                    case "USERNAME_TAKEN" ->
-                            logger.error("Registration failed due to taken username: {}", personDTO.getUsername());
-                }
-                return new ResponseEntity<>(new ErrorDTO(duplicateFieldErrorMessage), HttpStatus.BAD_REQUEST);
-            } else if (!("CORRECT_EMAIL".equals(emailFormatErrorMessage))) {
-                logger.error("Registration failed due to invalid email format: {} " , personDTO.getEmail());
-                return new ResponseEntity<>(new ErrorDTO(emailFormatErrorMessage), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ErrorDTO(emptyFieldErrorMessage), HttpStatus.BAD_REQUEST);
+        } else if (duplicateFieldErrorMessage != null) {
+            switch (duplicateFieldErrorMessage) {
+                case "EMAIL_TAKEN" -> logger.error("Registration failed due to taken email: {}", personDTO.getEmail());
+                case "PNR_TAKEN" -> logger.error("Registration failed due to taken pnr: {}", personDTO.getPnr());
+                case "USERNAME_TAKEN" ->
+                        logger.error("Registration failed due to taken username: {}", personDTO.getUsername());
             }
-            // User is saved to the database if the validation process is passed with no errors.
-            personService.saveApplicant(personDTO);
-            logger.info("Registration successful for " +
-                            "ip address: {} name: {} surname: {} pnr: {} email: {} password: {} username {} "
-                    , IP, personDTO.getName(), personDTO.getSurname(), personDTO.getPnr(), personDTO.getEmail(),
-                    personDTO.getPassword(), personDTO.getUsername());
-            return new ResponseEntity<>(new LinkedMultiValueMap<>(), HttpStatus.OK);
+            return new ResponseEntity<>(new ErrorDTO(duplicateFieldErrorMessage), HttpStatus.BAD_REQUEST);
+        } else if (!("CORRECT_EMAIL".equals(emailFormatErrorMessage))) {
+            logger.error("Registration failed due to invalid email format: {} ", personDTO.getEmail());
+            return new ResponseEntity<>(new ErrorDTO(emailFormatErrorMessage), HttpStatus.BAD_REQUEST);
+        }
+        // User is saved to the database if the validation process is passed with no errors.
+        personService.saveApplicant(personDTO);
+        logger.info("Registration successful for " + "ip address: {} name: {} surname: {} pnr: {} email: {} password: {} username {} ", IP, personDTO.getName(), personDTO.getSurname(), personDTO.getPnr(), personDTO.getEmail(), personDTO.getPassword(), personDTO.getUsername());
+        return new ResponseEntity<>(new LinkedMultiValueMap<>(), HttpStatus.OK);
     }
 }
