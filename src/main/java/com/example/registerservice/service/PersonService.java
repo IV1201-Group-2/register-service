@@ -1,8 +1,11 @@
 package com.example.registerservice.service;
 
+import com.example.registerservice.controller.RegisterController;
 import com.example.registerservice.model.Person;
 import com.example.registerservice.model.dto.PersonDTO;
 import com.example.registerservice.repository.PersonRepository;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -14,6 +17,11 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 public class PersonService {
+
+    /**
+     * Logger to log events for passing the business-logic during registration attempts.
+     */
+    private static final Logger logger = LogManager.getLogger(PersonService.class);
 
     /**
      * encoder used to encode passwords before they are inserted into the database.
@@ -53,6 +61,7 @@ public class PersonService {
         String hashedPassword = encoder.encode(personDTO.getPassword());
         Person person = Person.builder().name(personDTO.getName()).surname(personDTO.getSurname()).pnr(personDTO.getPnr()).email(personDTO.getEmail()).password(hashedPassword).role_id(2).username(personDTO.getUsername()).build();
         personRepository.save(person);
+        logger.info("Newly registered person with username: {}", personDTO.getUsername());
     }
 
     /**
@@ -64,8 +73,9 @@ public class PersonService {
      * @return true if no user was found to have the same username.
      */
     public boolean usernameAvailable(String username) {
-        return personRepository.findByUsername(username) == null;
-
+        boolean usernameAvailable = personRepository.findByUsername(username) == null;
+        logger.debug("Checking if username: {} is taken: {}", username, usernameAvailable);
+        return usernameAvailable;
     }
 
     /**
@@ -77,7 +87,10 @@ public class PersonService {
      * @return true if no user was found to have the same email.
      */
     private boolean emailAvailable(String email) {
-        return personRepository.findByEmail(email) == null;
+        boolean  emailAvailable = personRepository.findByEmail(email) == null;
+        logger.debug("Checking if email: {} is taken: {}", email, emailAvailable);
+        return emailAvailable;
+
     }
 
     /**
@@ -89,7 +102,9 @@ public class PersonService {
      * @return true if no user was found to have the same social security number.
      */
     private boolean pnrAvailable(String pnr) {
-        return personRepository.findByPnr(pnr) == null;
+        boolean pnrAvailable = personRepository.findByPnr(pnr) == null;
+        logger.debug("Checking if pnr: {} is taken: {}", pnr, pnrAvailable);
+        return pnrAvailable;
     }
 
     /**
