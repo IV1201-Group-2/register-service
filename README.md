@@ -49,7 +49,7 @@ mvn spotbugs:check
 - register-service
   - .github
     - workflows
-      - CI.yml -> On push, runs tests, static analysis, bug checks, linting and provides test coverage report.
+      - CI.yml -> On push, runs tests, static analysis, bug checks, linting and provides test coverage report
   - src
     - main
       - java
@@ -65,12 +65,12 @@ mvn spotbugs:check
             - PersonDTO -> Data transfer object containing person information required for registration
           - Person -> Model representing the database structure created for each registered user
         - repository 
-          - PersonRepository -> Repository that contains methods for data retrieval/modification operations.
+          - PersonRepository -> Repository that contains methods for data retrieval/modification operations
         - security
           - SecurityConfig -> Contains configurations and security settings
           - WebConfiguration -> Configures mappings to allow Cross-origin requests.
         - service
-          - PersonService -> Service handling business-logic specific to person-related operations.
+          - PersonService -> Service handling business-logic specific to person-related operations
    - resources
      - templates
        - application.properties -> Stores configuration properties
