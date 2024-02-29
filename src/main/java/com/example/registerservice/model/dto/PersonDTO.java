@@ -1,5 +1,6 @@
 package com.example.registerservice.model.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 
@@ -9,6 +10,7 @@ import lombok.Getter;
  * {@code @Data} is used to automatically generate getters and setters.
  */
 @Getter
+@AllArgsConstructor
 public class PersonDTO {
 
     /**
@@ -45,17 +47,4 @@ public class PersonDTO {
      * The username of the registering user.
      */
     private final String username;
-
-    /**
-     * Constructor for PersonDTO
-     */
-    public PersonDTO(Long person_id, String name, String surname, String pnr, String email, String password, String username) {
-        this.person_id = person_id;
-        this.name = name;
-        this.surname = surname;
-        this.pnr = pnr;
-        this.email = email;
-        this.password = password;
-        this.username = username;
-    }
 }

@@ -148,7 +148,7 @@
                 </executions>
                 <configuration>
                     <excludes>
-                        <exclude>com/example/registerservice/model/**</exclude>                    </excludes>
+                        <exclude>com/example/registerservice/model/Person.class</exclude>                    </excludes>
                 </configuration>
             </plugin>
         </plugins>
