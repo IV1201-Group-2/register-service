@@ -148,8 +148,7 @@
                 </executions>
                 <configuration>
                     <excludes>
-                        <exclude>com/example/registerservice/model/Person.java</exclude>
-                    </excludes>
+                        <exclude>com/example/registerservice/model/**</exclude>                    </excludes>
                 </configuration>
             </plugin>
         </plugins>
