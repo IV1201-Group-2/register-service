@@ -1,0 +1,9 @@
+com/example/registerservice/model/dto/PersonDTO.class
+com/example/registerservice/model/Person$PersonBuilder.class
+com/example/registerservice/controller/RegisterController.class
+com/example/registerservice/model/Person.class
+com/example/registerservice/repository/PersonRepository.class
+com/example/registerservice/model/dto/ErrorDTO.class
+com/example/registerservice/security/SecurityConfig.class
+com/example/registerservice/RegisterServiceApplication.class
+com/example/registerservice/service/PersonService.class
