@@ -79,26 +79,26 @@ public class RegisterController {
         // Or if user is already registered and is submitting data present in the database
         // Or if the email format is wrong, for example missing any of the 3: (local-part)(@)(domain-part)
         if (emptyFieldErrorMessage != null) {
-            logger.warn("Registration failed, with one/more required fields left empty " + " name: {} surname: {} pnr: {} email: {} password: {} username {} ", personDTO.getName(), personDTO.getSurname(), personDTO.getPnr(), personDTO.getEmail(), personDTO.getPassword(), personDTO.getUsername());
+            logger.warn("Registration failed, person with IP: {} has one/more required fields left empty " + " name: {} surname: {} pnr: {} email: {} password: {} username {} ", IP, personDTO.getName(), personDTO.getSurname(), personDTO.getPnr(), personDTO.getEmail(), personDTO.getPassword(), personDTO.getUsername());
             return new ResponseEntity<>(new ErrorDTO(emptyFieldErrorMessage), HttpStatus.BAD_REQUEST);
         } else if (duplicateFieldErrorMessage != null) {
 
             if ("EMAIL_TAKEN".equals(emailFormatErrorMessage)) {
-                logger.warn("Registration failed due to taken email: {}", personDTO.getEmail());
+                logger.warn("Person with IP: {} failed registration due to taken email: {}", IP, personDTO.getEmail());
             } else if ("PNR_TAKEN".equals(emailFormatErrorMessage)) {
-                logger.warn("Registration failed due to taken pnr: {}", personDTO.getPnr());
+                logger.warn("Person with IP: {} failed registration due to taken pnr: {}", IP, personDTO.getPnr());
             } else if ("USERNAME_TAKEN".equals(emailFormatErrorMessage)) {
-                logger.warn("Registration failed due to taken username: {}", personDTO.getUsername());
+                logger.warn("Person with IP: {} failed registration due to taken username: {}", IP, personDTO.getUsername());
             }
 
             return new ResponseEntity<>(new ErrorDTO(duplicateFieldErrorMessage), HttpStatus.BAD_REQUEST);
         } else if (!("CORRECT_EMAIL".equals(emailFormatErrorMessage))) {
-            logger.warn("Registration failed due to invalid email format: {} ", personDTO.getEmail());
+            logger.warn("Person with IP: {} failed registration due to invalid email format: {} ", IP, personDTO.getEmail());
             return new ResponseEntity<>(new ErrorDTO(emailFormatErrorMessage), HttpStatus.BAD_REQUEST);
         }
         // User is saved to the database if the validation process is passed with no errors.
         personService.saveApplicant(personDTO);
-        logger.info("Registration successful for " + "ip address: {} name: {} surname: {} pnr: {} email: {} password: {} username {} ", IP, personDTO.getName(), personDTO.getSurname(), personDTO.getPnr(), personDTO.getEmail(), personDTO.getPassword(), personDTO.getUsername());
+        logger.info("Registration successful for " + "person with IP: {} name: {} surname: {} pnr: {} email: {} password: {} username {} ", IP, personDTO.getName(), personDTO.getSurname(), personDTO.getPnr(), personDTO.getEmail(), personDTO.getPassword(), personDTO.getUsername());
         return new ResponseEntity<>(new LinkedMultiValueMap<>(), HttpStatus.OK);
     }
 }
