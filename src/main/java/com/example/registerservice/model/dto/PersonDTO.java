@@ -8,6 +8,7 @@ import lombok.Getter;
  * PersonDTO holds the data transfer object which represents the information
  * required by the registration form.
  * {@code @Data} is used to automatically generate getters and setters.
+ * {@code @AllArgsConstructor} creates and initializes all fields of an object in one class.
  */
 @Getter
 @AllArgsConstructor
