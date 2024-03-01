@@ -1,12 +1,5 @@
 # Register Service
 
-## Table of Contents
-* [General Info](#general-info)
-* [Project Setup](#project-setup)
-* [Recommended IDE Setup](#recommended-ide-setup)
-* [File and Directory Semantics](#file-and-directory-semantics)
-* [Environment Variables](#environment-variables)
-
 ## General info
 This repository contains all files relevant to the backend Register Service:
 * Service written in Spring boot application handles backend registration and validation process.
@@ -18,7 +11,7 @@ This repository contains all files relevant to the backend Register Service:
 
 ## Project Setup
 
-### Perform compiling, test runs and packaging
+### Perform compiling, test runs, and packaging
 ```sh
 mvn clean install
 ```
@@ -49,37 +42,37 @@ mvn spotbugs:check
 - register-service
   - .github
     - workflows
-      - CI.yml -> On push, runs tests, static analysis, bug checks, linting and provides test coverage report
+      - CI.yml -> On push, runs tests, static analysis, bug checks, linting, and provides test coverage report
   - src
     - main
       - java
         - com.example.registerservice
               - RegisterServiceApplication.java -> Initiates spring boot server
-        - controller
-          - RegisterController -> Handles HTTP requests
-        - exception 
-          - ExceptionHandler -> Throws a custom error in case of any general issues while the register microservice is running
-        - model
-          - dto
-            - ErrorDTO -> Data transfer object presents various errors depending on the validation check
-            - PersonDTO -> Data transfer object containing person information required for registration
-          - Person -> Model representing the database structure created for each registered user
-        - repository 
-          - PersonRepository -> Repository that contains methods for data retrieval/modification operations
-        - security
-          - SecurityConfig -> Contains configurations and security settings
-          - WebConfiguration -> Configures mappings to allow Cross-origin requests.
-        - service
-          - PersonService -> Service handling business-logic specific to person-related operations
+        - controller -> Handles HTTP requests
+          - RegisterController
+        - exception -> Throws a custom error in case of any general issues while the register microservice is running
+          - ExceptionHandler 
+        - model -> Model representing the database structure created for each registered user
+          - dto -> Data transfer object
+            - ErrorDTO 
+            - PersonDTO 
+          - Person 
+        - repository -> Repository that contains methods for data retrieval/modification operations
+          - PersonRepository 
+        - security -> Contains configurations and security settings
+          - SecurityConfig 
+          - WebConfiguration 
+        - service -> Service handling business-logic specific to person-related operations
+          - PersonService 
    - resources
      - templates
        - application.properties -> Stores configuration properties
        - log4j.properties -> Configuration for logging
   - test
     - java
-      - com.example.registerservice
-        - PersonRegistrationIntegrationTest -> Integration tests covering the service layer and repository layer
-        - RegistrationControllerIntegrationTest -> Integration tests covering the controller layer
+      - com.example.registerservice -> Integration tests covering MVC layers
+        - PersonRegistrationIntegrationTest 
+        - RegistrationControllerIntegrationTest
 - procfile -> Process types required by the app
 - system.properties -> Required Heroku settings
 - mwnw -> Build tool       
