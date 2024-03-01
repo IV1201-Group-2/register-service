@@ -60,7 +60,7 @@ public class PersonService {
         String hashedPassword = encoder.encode(personDTO.getPassword());
         Person person = Person.builder().name(personDTO.getName()).surname(personDTO.getSurname()).pnr(personDTO.getPnr()).email(personDTO.getEmail()).password(hashedPassword).role_id(2).username(personDTO.getUsername()).build();
         personRepository.save(person);
-        logger.info("Newly registered person with username: {}", personDTO.getUsername());
+        logger.debug("Newly registered person with username: {}", personDTO.getUsername());
     }
 
     /**
