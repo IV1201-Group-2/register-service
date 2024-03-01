@@ -61,7 +61,7 @@ public class RegisterController {
      * statuses depending on user input.
      *
      * @param personDTO Data transfer object representing users submitted information.
-     *                  {@code @ResponseBody}
+     *                  {@code @ResponseBody} writes the return type to HTTP response body.
      * @return HTTP status and no header.
      */
     @PostMapping(value = "/api/register", produces = "application/json")
@@ -79,21 +79,21 @@ public class RegisterController {
         // Or if user is already registered and is submitting data present in the database
         // Or if the email format is wrong, for example missing any of the 3: (local-part)(@)(domain-part)
         if (emptyFieldErrorMessage != null) {
-            logger.error("Registration failed, with one/more required fields left empty " + " name: {} surname: {} pnr: {} email: {} password: {} username {} ", personDTO.getName(), personDTO.getSurname(), personDTO.getPnr(), personDTO.getEmail(), personDTO.getPassword(), personDTO.getUsername());
+            logger.warn("Registration failed, with one/more required fields left empty " + " name: {} surname: {} pnr: {} email: {} password: {} username {} ", personDTO.getName(), personDTO.getSurname(), personDTO.getPnr(), personDTO.getEmail(), personDTO.getPassword(), personDTO.getUsername());
             return new ResponseEntity<>(new ErrorDTO(emptyFieldErrorMessage), HttpStatus.BAD_REQUEST);
         } else if (duplicateFieldErrorMessage != null) {
 
-            if("EMAIL_TAKEN".equals(emailFormatErrorMessage)){
-                logger.error("Registration failed due to taken email: {}", personDTO.getEmail());
-            }else if("PNR_TAKEN".equals(emailFormatErrorMessage)){
-                logger.error("Registration failed due to taken pnr: {}", personDTO.getPnr());
-            } else if("USERNAME_TAKEN".equals(emailFormatErrorMessage)){
-                logger.error("Registration failed due to taken username: {}", personDTO.getUsername());
+            if ("EMAIL_TAKEN".equals(emailFormatErrorMessage)) {
+                logger.warn("Registration failed due to taken email: {}", personDTO.getEmail());
+            } else if ("PNR_TAKEN".equals(emailFormatErrorMessage)) {
+                logger.warn("Registration failed due to taken pnr: {}", personDTO.getPnr());
+            } else if ("USERNAME_TAKEN".equals(emailFormatErrorMessage)) {
+                logger.warn("Registration failed due to taken username: {}", personDTO.getUsername());
             }
-            
+
             return new ResponseEntity<>(new ErrorDTO(duplicateFieldErrorMessage), HttpStatus.BAD_REQUEST);
         } else if (!("CORRECT_EMAIL".equals(emailFormatErrorMessage))) {
-            logger.error("Registration failed due to invalid email format: {} ", personDTO.getEmail());
+            logger.warn("Registration failed due to invalid email format: {} ", personDTO.getEmail());
             return new ResponseEntity<>(new ErrorDTO(emailFormatErrorMessage), HttpStatus.BAD_REQUEST);
         }
         // User is saved to the database if the validation process is passed with no errors.
