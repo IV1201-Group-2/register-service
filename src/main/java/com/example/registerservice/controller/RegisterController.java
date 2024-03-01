@@ -62,7 +62,7 @@ public class RegisterController {
      *
      * @param personDTO Data transfer object representing users submitted information.
      *                  {@code @ResponseBody} writes the return type to HTTP response body.
-     * @return HTTP status and no header.
+     * @return HTTP status and an empty LinkedMultiValueMap as the body.
      */
     @PostMapping(value = "/api/register", produces = "application/json")
     @ResponseBody
