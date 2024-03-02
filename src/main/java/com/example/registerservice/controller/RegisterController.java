@@ -11,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -43,16 +42,6 @@ public class RegisterController {
      */
     RegisterController(PersonService personService) {
         this.personService = personService;
-    }
-
-    /**
-     * Method renders the registration HTML form.
-     *
-     * @return Renders the name of the HTMl page for the user.
-     */
-    @GetMapping("/api/register")
-    public String presentSignUpHTML() {
-        return "register";
     }
 
     /**
