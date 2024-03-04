@@ -15,11 +15,6 @@ import lombok.Getter;
 public class PersonDTO {
 
     /**
-     * person_id is the primary key in the database.
-     */
-    private final Long person_id;
-
-    /**
      * The first name of the registering user.
      */
     private final String name;
