@@ -30,13 +30,18 @@ import static org.junit.jupiter.api.Assertions.*;
 public class PersonRegistrationIntegrationTest {
 
     /**
+     * Default password, managed in GitHub Actions Secrets & Variables
+     */
+    private static final String DEFAULT_PASS = System.getenv("DEFAULT_PASS");
+
+    /**
      * Mocking a PostgreSQL database for the integration tests.
      * The database is configured with a specific, name, username and
      * password as well as the latest postgreSQL version.
      * {@code @Container} sets the field as a TestContainer container.
      */
     @Container
-    private static final PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:latest").withDatabaseName("postgresg2").withUsername("postgres").withPassword("Qwerty123456!");
+    private static final PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:latest").withDatabaseName("postgresg2").withUsername("postgres").withPassword(DEFAULT_PASS);
 
     /**
      * PersonService is an autowired instance contains business-logic for person-related operations.
@@ -131,7 +136,7 @@ public class PersonRegistrationIntegrationTest {
     @Test
     void isNameMissingInRegistrationForm() {
         //User attempting to submit a registration where the name is missing
-        PersonDTO personMissingName = new PersonDTO( "", "Eklund", "202203323434", "claraeklund@kth.com", "123", "claraek");
+        PersonDTO personMissingName = new PersonDTO("", "Eklund", "202203323434", "claraeklund@kth.com", "123", "claraek");
         assertNotNull(personService.checkEmptyRegistrationFields(personMissingName));
 
     }
@@ -143,7 +148,7 @@ public class PersonRegistrationIntegrationTest {
     @Test
     void isSurnameMissingInRegistrationForm() {
         //User attempting to submit a registration where the surname is missing
-        PersonDTO personMissingSurname = new PersonDTO( "Anders", "", "202012123454", "andersbo@kth.com", "123", "anders12");
+        PersonDTO personMissingSurname = new PersonDTO("Anders", "", "202012123454", "andersbo@kth.com", "123", "anders12");
         assertNotNull(personService.checkEmptyRegistrationFields(personMissingSurname));
 
     }
@@ -156,7 +161,7 @@ public class PersonRegistrationIntegrationTest {
     void isSocialSecurityNumberMissingInRegistrationForm() {
 
         //User attempting to submit a registration where the Social security number is missing
-        PersonDTO personMissingPnr = new PersonDTO( "Karin", "Elbert", "", "karinelb@kth.com", "123", "karin20");
+        PersonDTO personMissingPnr = new PersonDTO("Karin", "Elbert", "", "karinelb@kth.com", "123", "karin20");
         assertNotNull(personService.checkEmptyRegistrationFields(personMissingPnr));
 
     }
@@ -216,7 +221,7 @@ public class PersonRegistrationIntegrationTest {
      */
     @Test
     void isEmailMissingAtSign() throws Exception {
-        PersonDTO emailMissingAtSign = new PersonDTO( "test", "", "00091738559", "testtest.com", "123", "test");
+        PersonDTO emailMissingAtSign = new PersonDTO("test", "", "00091738559", "testtest.com", "123", "test");
         //User attempting to submit a registration where the email is missing an at sign
         assertNotEquals("", personService.checkEmailFormat(emailMissingAtSign));
 
@@ -227,7 +232,7 @@ public class PersonRegistrationIntegrationTest {
      */
     @Test
     void isEmailMissingDomainPart() throws Exception {
-        PersonDTO emailMissingDomainPart = new PersonDTO( "test", "", "00091738559", "test@", "123", "test");
+        PersonDTO emailMissingDomainPart = new PersonDTO("test", "", "00091738559", "test@", "123", "test");
         //User attempting to submit a registration where the email is missing a domain part
         assertNotEquals("", personService.checkEmailFormat(emailMissingDomainPart));
 
@@ -248,7 +253,7 @@ public class PersonRegistrationIntegrationTest {
      */
     @Test
     void isEmailMissingLocalPartAndDomainPart() throws Exception {
-        PersonDTO emailMissingLocalPartAndDomainPart = new PersonDTO( "test", "", "00091738559", "@", "123", "test");
+        PersonDTO emailMissingLocalPartAndDomainPart = new PersonDTO("test", "", "00091738559", "@", "123", "test");
         //User attempting to submit a registration where the email is missing a local part and domain part
         assertNotEquals("", personService.checkEmailFormat(emailMissingLocalPartAndDomainPart));
 
@@ -270,7 +275,7 @@ public class PersonRegistrationIntegrationTest {
      */
     @Test
     void isEmailCorrect() throws Exception {
-        PersonDTO correctEmailFormat = new PersonDTO( "test", "", "00091738559", "test@test.com", "123", "test");
+        PersonDTO correctEmailFormat = new PersonDTO("test", "", "00091738559", "test@test.com", "123", "test");
         //User registering with a correct email format
         assertEquals("CORRECT_EMAIL", personService.checkEmailFormat(correctEmailFormat));
 
