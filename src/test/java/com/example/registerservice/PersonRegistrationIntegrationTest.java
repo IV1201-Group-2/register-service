@@ -75,11 +75,11 @@ public class PersonRegistrationIntegrationTest {
     @Test
     void isUsernameAlreadyInDatabase() throws Exception {
         //New user registered with unique data fields submitted
-        PersonDTO firstRegistration = new PersonDTO(1L, "Clara", "Eklund", "202203323434", "claraeklund@kth.com", "123", "claraek");
+        PersonDTO firstRegistration = new PersonDTO("Clara", "Eklund", "202203323434", "claraeklund@kth.com", "123", "claraek");
         personService.saveApplicant(firstRegistration);
 
         //User attempting to register with a username that is taken
-        PersonDTO secondRegistration = new PersonDTO(1L, "Anders", "Dean", "202012123454", "andersbo@kth.com", "123", "claraek");
+        PersonDTO secondRegistration = new PersonDTO("Anders", "Dean", "202012123454", "andersbo@kth.com", "123", "claraek");
         String errorUsernameTaken = personService.checkRegistrationDuplicate(secondRegistration);
         assertNotNull(errorUsernameTaken);
 
@@ -94,11 +94,11 @@ public class PersonRegistrationIntegrationTest {
     @Test
     void isEmailAlreadyInDatabase() throws Exception {
         //New user registered with unique data fields submitted
-        PersonDTO firstRegistration = new PersonDTO(1L, "Clara", "Eklund", "202203323434", "claraeklund@kth.com", "123", "claraek");
+        PersonDTO firstRegistration = new PersonDTO("Clara", "Eklund", "202203323434", "claraeklund@kth.com", "123", "claraek");
         personService.saveApplicant(firstRegistration);
 
         //User attempting to register with an email that is taken
-        PersonDTO fourthRegistration = new PersonDTO(1L, "Fatima", "Akbari", "200011118989", "claraeklund@kth.com", "123", "fatimakbari");
+        PersonDTO fourthRegistration = new PersonDTO("Fatima", "Akbari", "200011118989", "claraeklund@kth.com", "123", "fatimakbari");
         String errorEmailTaken = personService.checkRegistrationDuplicate(fourthRegistration);
         assertNotNull(errorEmailTaken);
 
@@ -113,11 +113,11 @@ public class PersonRegistrationIntegrationTest {
     @Test
     void isSocialSecurityNumberAlreadyInDatabase() throws Exception {
         //New user registered with unique data fields submitted
-        PersonDTO firstRegistration = new PersonDTO(1L, "Clara", "Eklund", "202203323434", "claraeklund@kth.com", "123", "claraek");
+        PersonDTO firstRegistration = new PersonDTO("Clara", "Eklund", "202203323434", "claraeklund@kth.com", "123", "claraek");
         personService.saveApplicant(firstRegistration);
 
         //User attempting to register with a Social security number that is taken
-        PersonDTO thirdRegistration = new PersonDTO(1L, "Karin", "Elbert", "202203323434", "karinelb@kth.com", "123", "karin20");
+        PersonDTO thirdRegistration = new PersonDTO("Karin", "Elbert", "202203323434", "karinelb@kth.com", "123", "karin20");
         String errorPnrTaken = personService.checkRegistrationDuplicate(thirdRegistration);
         assertNotNull(errorPnrTaken);
 
@@ -131,7 +131,7 @@ public class PersonRegistrationIntegrationTest {
     @Test
     void isNameMissingInRegistrationForm() {
         //User attempting to submit a registration where the name is missing
-        PersonDTO personMissingName = new PersonDTO(1L, "", "Eklund", "202203323434", "claraeklund@kth.com", "123", "claraek");
+        PersonDTO personMissingName = new PersonDTO( "", "Eklund", "202203323434", "claraeklund@kth.com", "123", "claraek");
         assertNotNull(personService.checkEmptyRegistrationFields(personMissingName));
 
     }
@@ -143,7 +143,7 @@ public class PersonRegistrationIntegrationTest {
     @Test
     void isSurnameMissingInRegistrationForm() {
         //User attempting to submit a registration where the surname is missing
-        PersonDTO personMissingSurname = new PersonDTO(1L, "Anders", "", "202012123454", "andersbo@kth.com", "123", "anders12");
+        PersonDTO personMissingSurname = new PersonDTO( "Anders", "", "202012123454", "andersbo@kth.com", "123", "anders12");
         assertNotNull(personService.checkEmptyRegistrationFields(personMissingSurname));
 
     }
@@ -156,7 +156,7 @@ public class PersonRegistrationIntegrationTest {
     void isSocialSecurityNumberMissingInRegistrationForm() {
 
         //User attempting to submit a registration where the Social security number is missing
-        PersonDTO personMissingPnr = new PersonDTO(1L, "Karin", "Elbert", "", "karinelb@kth.com", "123", "karin20");
+        PersonDTO personMissingPnr = new PersonDTO( "Karin", "Elbert", "", "karinelb@kth.com", "123", "karin20");
         assertNotNull(personService.checkEmptyRegistrationFields(personMissingPnr));
 
     }
@@ -169,7 +169,7 @@ public class PersonRegistrationIntegrationTest {
     void isEmailMissingInRegistrationForm() {
 
         //User attempting to submit a registration where the email is missing
-        PersonDTO personMissingEmail = new PersonDTO(1L, "Fatima", "Akbari", "200011118989", "", "123", "fatimakbari");
+        PersonDTO personMissingEmail = new PersonDTO("Fatima", "Akbari", "200011118989", "", "123", "fatimakbari");
         assertNotNull(personService.checkEmptyRegistrationFields(personMissingEmail));
     }
 
@@ -180,7 +180,7 @@ public class PersonRegistrationIntegrationTest {
     @Test
     void isPasswordMissingInRegistrationForm() {
         //User attempting to submit a registration where the password is missing
-        PersonDTO personMissingPassword = new PersonDTO(1L, "Elira", "Ahlborg", "200109088687", "elira21@kth.com", "", "eliraa");
+        PersonDTO personMissingPassword = new PersonDTO("Elira", "Ahlborg", "200109088687", "elira21@kth.com", "", "eliraa");
         assertNotNull(personService.checkEmptyRegistrationFields(personMissingPassword));
 
 
@@ -194,7 +194,7 @@ public class PersonRegistrationIntegrationTest {
     void isAFieldMissingInRegistrationForm() {
 
         //User attempting to submit a registration where the username is missing
-        PersonDTO personMissingUsername = new PersonDTO(1L, "Dannie", "Kvist", "200401012343", "dankvist@kth.com", "123", "");
+        PersonDTO personMissingUsername = new PersonDTO("Dannie", "Kvist", "200401012343", "dankvist@kth.com", "123", "");
         assertNotNull(personService.checkEmptyRegistrationFields(personMissingUsername));
 
 
@@ -205,7 +205,7 @@ public class PersonRegistrationIntegrationTest {
      */
     @Test
     void isEmailMissingLocalPart() throws Exception {
-        PersonDTO emailMissingLocalPart = new PersonDTO(1L, "test", "", "00091738559", "@test.com", "123", "test");
+        PersonDTO emailMissingLocalPart = new PersonDTO("test", "", "00091738559", "@test.com", "123", "test");
         //User attempting to submit a registration where the email is missing a local part
         assertNotEquals("", personService.checkEmailFormat(emailMissingLocalPart));
 
@@ -216,7 +216,7 @@ public class PersonRegistrationIntegrationTest {
      */
     @Test
     void isEmailMissingAtSign() throws Exception {
-        PersonDTO emailMissingAtSign = new PersonDTO(1L, "test", "", "00091738559", "testtest.com", "123", "test");
+        PersonDTO emailMissingAtSign = new PersonDTO( "test", "", "00091738559", "testtest.com", "123", "test");
         //User attempting to submit a registration where the email is missing an at sign
         assertNotEquals("", personService.checkEmailFormat(emailMissingAtSign));
 
@@ -227,7 +227,7 @@ public class PersonRegistrationIntegrationTest {
      */
     @Test
     void isEmailMissingDomainPart() throws Exception {
-        PersonDTO emailMissingDomainPart = new PersonDTO(1L, "test", "", "00091738559", "test@", "123", "test");
+        PersonDTO emailMissingDomainPart = new PersonDTO( "test", "", "00091738559", "test@", "123", "test");
         //User attempting to submit a registration where the email is missing a domain part
         assertNotEquals("", personService.checkEmailFormat(emailMissingDomainPart));
 
@@ -238,7 +238,7 @@ public class PersonRegistrationIntegrationTest {
      */
     @Test
     void isEmailMissingLocalAndAtSign() throws Exception {
-        PersonDTO emailMissingLocalAndAtSign = new PersonDTO(1L, "test", "", "00091738559", "test.com", "123", "test");
+        PersonDTO emailMissingLocalAndAtSign = new PersonDTO("test", "", "00091738559", "test.com", "123", "test");
         //User attempting to submit a registration where the email is missing a local part and atsign
         assertNotEquals("", personService.checkEmailFormat(emailMissingLocalAndAtSign));
     }
@@ -248,7 +248,7 @@ public class PersonRegistrationIntegrationTest {
      */
     @Test
     void isEmailMissingLocalPartAndDomainPart() throws Exception {
-        PersonDTO emailMissingLocalPartAndDomainPart = new PersonDTO(1L, "test", "", "00091738559", "@", "123", "test");
+        PersonDTO emailMissingLocalPartAndDomainPart = new PersonDTO( "test", "", "00091738559", "@", "123", "test");
         //User attempting to submit a registration where the email is missing a local part and domain part
         assertNotEquals("", personService.checkEmailFormat(emailMissingLocalPartAndDomainPart));
 
@@ -259,7 +259,7 @@ public class PersonRegistrationIntegrationTest {
      */
     @Test
     void isEmailMissingAtSignAndDomainPart() throws Exception {
-        PersonDTO emailMissingAtSignAndDomainPart = new PersonDTO(1L, "test", "", "00091738559", "test", "123", "test");
+        PersonDTO emailMissingAtSignAndDomainPart = new PersonDTO("test", "", "00091738559", "test", "123", "test");
         //User attempting to submit a registration where the email is missing atsign and domain part
         assertNotEquals("", personService.checkEmailFormat(emailMissingAtSignAndDomainPart));
 
@@ -270,7 +270,7 @@ public class PersonRegistrationIntegrationTest {
      */
     @Test
     void isEmailCorrect() throws Exception {
-        PersonDTO correctEmailFormat = new PersonDTO(1L, "test", "", "00091738559", "test@test.com", "123", "test");
+        PersonDTO correctEmailFormat = new PersonDTO( "test", "", "00091738559", "test@test.com", "123", "test");
         //User registering with a correct email format
         assertEquals("CORRECT_EMAIL", personService.checkEmailFormat(correctEmailFormat));
 

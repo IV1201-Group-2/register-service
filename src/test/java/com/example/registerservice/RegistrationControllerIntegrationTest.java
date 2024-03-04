@@ -92,7 +92,7 @@ public class RegistrationControllerIntegrationTest {
         request.addHeader("X-Forwarded-For", "127.0.0.1");
 
         //New user registered with unique data fields submitted
-        PersonDTO firstRegistration = new PersonDTO(1L, "Clara", "Eklund", "202203323434", "claraeklund@kth.com", "123", "claraek");
+        PersonDTO firstRegistration = new PersonDTO( "Clara", "Eklund", "202203323434", "claraeklund@kth.com", "123", "claraek");
         ResponseEntity<Object> firstUserRegistration = registerController.registration(firstRegistration, request);
         assertEquals(HttpStatus.OK, firstUserRegistration.getStatusCode());
     }
@@ -110,9 +110,9 @@ public class RegistrationControllerIntegrationTest {
         request.addHeader("X-Forwarded-For", "127.0.0.1");
 
         //Saving a unique user to the database
-        registerController.registration(new PersonDTO(1L, "Anders", "Dean", "202012123454", "andersbo@kth.com", "123", "Anders"), request);
+        registerController.registration(new PersonDTO( "Anders", "Dean", "202012123454", "andersbo@kth.com", "123", "Anders"), request);
         //User attempting to register with a username that is taken
-        PersonDTO secondRegistration = new PersonDTO(1L, "Tiana", "Bell", "200101014565", "tiana@kth.com", "123", "Anders");
+        PersonDTO secondRegistration = new PersonDTO("Tiana", "Bell", "200101014565", "tiana@kth.com", "123", "Anders");
         ResponseEntity<Object> secondUserRegistration = registerController.registration(secondRegistration, request);
         assertEquals(HttpStatus.BAD_REQUEST, secondUserRegistration.getStatusCode());
     }
@@ -130,9 +130,9 @@ public class RegistrationControllerIntegrationTest {
         request.addHeader("X-Forwarded-For", "127.0.0.1");
 
         //Saving a unique user to the database
-        registerController.registration(new PersonDTO(1L, "Anders", "Dean", "202012123454", "andersbo@kth.com", "123", "Anders"), request);
+        registerController.registration(new PersonDTO("Anders", "Dean", "202012123454", "andersbo@kth.com", "123", "Anders"), request);
         //User attempting to register with a Social security number that is taken
-        PersonDTO thirdRegistration = new PersonDTO(1L, "Karin", "Elbert", "202012123454", "karinelb@kth.com", "123", "karin20");
+        PersonDTO thirdRegistration = new PersonDTO( "Karin", "Elbert", "202012123454", "karinelb@kth.com", "123", "karin20");
         ResponseEntity<Object> thirdUserRegistration = registerController.registration(thirdRegistration, request);
         assertEquals(HttpStatus.BAD_REQUEST, thirdUserRegistration.getStatusCode());
 
@@ -151,9 +151,9 @@ public class RegistrationControllerIntegrationTest {
         request.addHeader("X-Forwarded-For", "127.0.0.1");
 
         //Saving a unique user to the database
-        registerController.registration(new PersonDTO(1L, "Anders", "Dean", "202012123454", "andersbo@kth.com", "123", "Anders"), request);
+        registerController.registration(new PersonDTO( "Anders", "Dean", "202012123454", "andersbo@kth.com", "123", "Anders"), request);
         //User attempting to register with an email that is taken
-        PersonDTO fourthRegistration = new PersonDTO(1L, "Fatima", "Akbari", "200011118989", "andersbo@kth.com", "123", "fatimakbari");
+        PersonDTO fourthRegistration = new PersonDTO( "Fatima", "Akbari", "200011118989", "andersbo@kth.com", "123", "fatimakbari");
         ResponseEntity<Object> fourthUserRegistration = registerController.registration(fourthRegistration, request);
         assertEquals(HttpStatus.BAD_REQUEST, fourthUserRegistration.getStatusCode());
     }
@@ -169,7 +169,7 @@ public class RegistrationControllerIntegrationTest {
         request.addHeader("X-Forwarded-For", "127.0.0.1");
 
         //User attempting to submit a registration where the name is missing
-        PersonDTO personMissingName = new PersonDTO(1L, "", "Eklund", "202203323434", "claraeklund@kth.com", "123", "claraek");
+        PersonDTO personMissingName = new PersonDTO( "", "Eklund", "202203323434", "claraeklund@kth.com", "123", "claraek");
         ResponseEntity<Object> firstUserRegistration = registerController.registration(personMissingName, request);
         assertEquals(HttpStatus.BAD_REQUEST, firstUserRegistration.getStatusCode());
 
@@ -186,7 +186,7 @@ public class RegistrationControllerIntegrationTest {
         request.addHeader("X-Forwarded-For", "127.0.0.1");
 
         //User attempting to submit a registration where the surname is missing
-        PersonDTO personMissingSurname = new PersonDTO(1L, "Anders", "", "202012123454", "andersbo@kth.com", "123", "anders12");
+        PersonDTO personMissingSurname = new PersonDTO( "Anders", "", "202012123454", "andersbo@kth.com", "123", "anders12");
         ResponseEntity<Object> secondUserRegistration = registerController.registration(personMissingSurname, request);
         assertEquals(HttpStatus.BAD_REQUEST, secondUserRegistration.getStatusCode());
     }
@@ -202,7 +202,7 @@ public class RegistrationControllerIntegrationTest {
         request.addHeader("X-Forwarded-For", "127.0.0.1");
 
         //User attempting to submit a registration where the Social security number is missing
-        PersonDTO personMissingPnr = new PersonDTO(1L, "Karin", "Elbert", "", "karinelb@kth.com", "123", "karin20");
+        PersonDTO personMissingPnr = new PersonDTO( "Karin", "Elbert", "", "karinelb@kth.com", "123", "karin20");
         ResponseEntity<Object> thirdUserRegistration = registerController.registration(personMissingPnr, request);
         assertEquals(HttpStatus.BAD_REQUEST, thirdUserRegistration.getStatusCode());
     }
@@ -218,7 +218,7 @@ public class RegistrationControllerIntegrationTest {
         request.addHeader("X-Forwarded-For", "127.0.0.1");
 
         //User attempting to submit a registration where the email is missing
-        PersonDTO personMissingEmail = new PersonDTO(1L, "Fatima", "Akbari", "200011118989", "", "123", "fatimakbari");
+        PersonDTO personMissingEmail = new PersonDTO( "Fatima", "Akbari", "200011118989", "", "123", "fatimakbari");
         ResponseEntity<Object> fourthUserRegistration = registerController.registration(personMissingEmail, request);
         assertEquals(HttpStatus.BAD_REQUEST, fourthUserRegistration.getStatusCode());
     }
@@ -234,7 +234,7 @@ public class RegistrationControllerIntegrationTest {
         request.addHeader("X-Forwarded-For", "127.0.0.1");
 
         //User attempting to submit a registration where the password is missing
-        PersonDTO personMissingPassword = new PersonDTO(1L, "Elira", "Ahlborg", "200109088687", "elira21@kth.com", "", "eliraa");
+        PersonDTO personMissingPassword = new PersonDTO( "Elira", "Ahlborg", "200109088687", "elira21@kth.com", "", "eliraa");
         ResponseEntity<Object> fifthUserRegistration = registerController.registration(personMissingPassword, request);
         assertEquals(HttpStatus.BAD_REQUEST, fifthUserRegistration.getStatusCode());
     }
@@ -250,7 +250,7 @@ public class RegistrationControllerIntegrationTest {
         request.addHeader("X-Forwarded-For", "127.0.0.1");
 
         //User attempting to submit a registration where the username is missing
-        PersonDTO personMissingUsername = new PersonDTO(1L, "Dannie", "Kvist", "200403030909", "dankvist@kth.com", "123", "");
+        PersonDTO personMissingUsername = new PersonDTO( "Dannie", "Kvist", "200403030909", "dankvist@kth.com", "123", "");
         ResponseEntity<Object> sixthUserRegistration = registerController.registration(personMissingUsername, request);
         assertEquals(HttpStatus.BAD_REQUEST, sixthUserRegistration.getStatusCode());
 
@@ -265,7 +265,7 @@ public class RegistrationControllerIntegrationTest {
         request.addHeader("X-Forwarded-For", "127.0.0.1");
 
         //User attempting to submit a registration where the email is missing a local part
-        PersonDTO emailMissingLocalPart = new PersonDTO(1L, "Clara", "Eklund", "202203323434", "@kth.com", "123", "claraek");
+        PersonDTO emailMissingLocalPart = new PersonDTO("Clara", "Eklund", "202203323434", "@kth.com", "123", "claraek");
         ResponseEntity<Object> firstUserRegistration = registerController.registration(emailMissingLocalPart, request);
         assertEquals(HttpStatus.BAD_REQUEST, firstUserRegistration.getStatusCode());
 
@@ -280,7 +280,7 @@ public class RegistrationControllerIntegrationTest {
         request.addHeader("X-Forwarded-For", "127.0.0.1");
 
         //User attempting to submit a registration where the email is missing an at sign
-        PersonDTO emailMissingAtSign = new PersonDTO(1L, "Anders", "Dean", "202012123454", "andersbokth.com", "123", "anders12");
+        PersonDTO emailMissingAtSign = new PersonDTO( "Anders", "Dean", "202012123454", "andersbokth.com", "123", "anders12");
         ResponseEntity<Object> secondUserRegistration = registerController.registration(emailMissingAtSign, request);
         assertEquals(HttpStatus.BAD_REQUEST, secondUserRegistration.getStatusCode());
     }
@@ -294,7 +294,7 @@ public class RegistrationControllerIntegrationTest {
         request.addHeader("X-Forwarded-For", "127.0.0.1");
 
         //User attempting to submit a registration where the email is missing a domain part
-        PersonDTO emailMissingDomainPart = new PersonDTO(1L, "Karin", "Elbert", "200304056787", "karinelb@", "123", "karin20");
+        PersonDTO emailMissingDomainPart = new PersonDTO( "Karin", "Elbert", "200304056787", "karinelb@", "123", "karin20");
         ResponseEntity<Object> thirdUserRegistration = registerController.registration(emailMissingDomainPart, request);
         assertEquals(HttpStatus.BAD_REQUEST, thirdUserRegistration.getStatusCode());
     }
@@ -308,7 +308,7 @@ public class RegistrationControllerIntegrationTest {
         request.addHeader("X-Forwarded-For", "127.0.0.1");
 
         //User attempting to submit a registration where the email is missing a local part and atsign
-        PersonDTO emailMissingLocalAndAtSign = new PersonDTO(1L, "Fatima", "Akbari", "200011118989", "kth.se", "123", "fatimakbari");
+        PersonDTO emailMissingLocalAndAtSign = new PersonDTO("Fatima", "Akbari", "200011118989", "kth.se", "123", "fatimakbari");
         ResponseEntity<Object> fourthUserRegistration = registerController.registration(emailMissingLocalAndAtSign, request);
         assertEquals(HttpStatus.BAD_REQUEST, fourthUserRegistration.getStatusCode());
 
@@ -323,7 +323,7 @@ public class RegistrationControllerIntegrationTest {
         request.addHeader("X-Forwarded-For", "127.0.0.1");
 
         //User attempting to submit a registration where the email is missing a local part and domain part
-        PersonDTO emailMissingLocalPartAndDomainPart = new PersonDTO(1L, "Elira", "Ahlborg", "200109088687", "@", "123", "eliraa");
+        PersonDTO emailMissingLocalPartAndDomainPart = new PersonDTO( "Elira", "Ahlborg", "200109088687", "@", "123", "eliraa");
         ResponseEntity<Object> fifthUserRegistration = registerController.registration(emailMissingLocalPartAndDomainPart, request);
         assertEquals(HttpStatus.BAD_REQUEST, fifthUserRegistration.getStatusCode());
     }
@@ -337,7 +337,7 @@ public class RegistrationControllerIntegrationTest {
         request.addHeader("X-Forwarded-For", "127.0.0.1");
 
         //User attempting to submit a registration where the email is missing atsign and domain part
-        PersonDTO emailMissingAtSignAndDomainPart = new PersonDTO(1L, "Andreas", "Linder", "200112124565", "andreas", "123", "test");
+        PersonDTO emailMissingAtSignAndDomainPart = new PersonDTO( "Andreas", "Linder", "200112124565", "andreas", "123", "test");
         ResponseEntity<Object> sixthUserRegistration = registerController.registration(emailMissingAtSignAndDomainPart, request);
         assertEquals(HttpStatus.BAD_REQUEST, sixthUserRegistration.getStatusCode());
 
@@ -353,7 +353,7 @@ public class RegistrationControllerIntegrationTest {
         request.addHeader("X-Forwarded-For", "127.0.0.1");
 
         //User registering with a correct email format
-        PersonDTO correctEmailFormat = new PersonDTO(1L, "Dannie", "Kvist", "200103034989", "dankvist@kth.com", "123", "dankvistt");
+        PersonDTO correctEmailFormat = new PersonDTO( "Dannie", "Kvist", "200103034989", "dankvist@kth.com", "123", "dankvistt");
         ResponseEntity<Object> seventhUserRegistration = registerController.registration(correctEmailFormat, request);
         assertEquals(HttpStatus.OK, seventhUserRegistration.getStatusCode());
 
