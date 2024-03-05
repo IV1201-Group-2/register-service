@@ -7,12 +7,14 @@ import com.example.registerservice.service.PersonService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -55,7 +57,12 @@ public class RegisterController {
      */
     @PostMapping(value = "/api/register", produces = "application/json")
     @ResponseBody
-    public ResponseEntity<Object> registration(@RequestBody PersonDTO personDTO, HttpServletRequest request) {
+    public ResponseEntity<Object> registration(@RequestBody PersonDTO personDTO, HttpServletRequest request, @RequestHeader(HttpHeaders.AUTHORIZATION) String authorization) {
+        // If the Authorization header is set, the user is already logged in
+        if (authorization != null && !authorization.equals("")) {
+            return new ResponseEntity<>(new ErrorDTO("ALREADY_LOGGED_IN"), HttpStatus.BAD_REQUEST);
+        }
+
         // IP of the person attempting to register
         String IP = request.getRemoteAddr();
 
